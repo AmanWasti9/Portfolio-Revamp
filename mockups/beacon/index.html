@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Beacon — Read. Learn. Be inspired.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --red: #e3262c;
+      --red-600: #c41d22;
+      --ink: #111111;
+      --ink-2: #2a2a2a;
+      --muted: #6b6b6b;
+      --line: #e7e7e4;
+      --paper: #f7f7f5;
+      --white: #ffffff;
+      --sans: "Inter Tight", "Segoe UI", system-ui, sans-serif;
+      --serif: "Source Serif 4", Georgia, serif;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: var(--sans); color: var(--ink); background: var(--white); -webkit-font-smoothing: antialiased; }
+    a { color: inherit; text-decoration: none; }
+    svg { display: block; }
+    .wrap { width: min(1240px, 100% - 56px); margin: 0 auto; }
+    .btn { display: inline-flex; align-items: center; gap: 10px; padding: 13px 22px; border-radius: 999px; font-weight: 700; font-size: 15px; white-space: nowrap; }
+    .btn-red { background: var(--red); color: var(--white); }
+    .btn-red:hover { background: var(--red-600); }
+    .btn-line { border: 1.5px solid var(--ink); }
+    .cover { width: 100%; height: 100%; }
+
+    /* ── nav ───────────────────────────────── */
+    .nav { display: flex; align-items: center; justify-content: space-between; padding: 22px 0; border-bottom: 1px solid var(--line); }
+    .logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 25px; letter-spacing: -0.03em; }
+    .logo svg { width: 32px; height: 32px; }
+    .links { display: flex; gap: 34px; font-weight: 500; font-size: 15px; }
+    .links a { position: relative; padding: 4px 0; color: #333; }
+    .links a.on { color: var(--red); }
+    .links a.on::after { content: ""; position: absolute; left: 0; right: 0; bottom: -4px; height: 2px; background: var(--red); }
+    .nav-right { display: flex; align-items: center; gap: 10px; }
+    .icon { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; border: 1px solid var(--line); }
+    .nav .btn { padding: 10px 18px; font-size: 14px; }
+
+    /* ── hero ──────────────────────────────── */
+    .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; padding: 64px 0 76px; }
+    .kicker { display: inline-flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--red); }
+    .kicker i { width: 26px; height: 2px; background: var(--red); }
+    h1 { margin: 18px 0 20px; font-size: clamp(50px, 6.6vw, 92px); line-height: 0.96; letter-spacing: -0.05em; font-weight: 800; }
+    h1 em { font-style: normal; color: var(--red); }
+    .lead { margin: 0; max-width: 36ch; font-family: var(--serif); font-size: 21px; line-height: 1.5; color: #333; }
+    .ctas { display: flex; gap: 12px; margin-top: 32px; }
+    .ctas .btn { padding: 15px 26px; font-size: 16px; }
+    .proof { display: flex; align-items: center; gap: 14px; margin-top: 40px; font-size: 14px; color: var(--muted); }
+    .faces { display: flex; }
+    .faces span { width: 34px; height: 34px; margin-left: -8px; border-radius: 50%; border: 2px solid var(--white); display: grid; place-items: center; font-size: 12px; font-weight: 700; color: var(--white); }
+    .faces span:first-child { margin-left: 0; }
+    .proof b { color: var(--ink); }
+
+    .hero-art { position: relative; height: 520px; }
+    .hero-art .frame { position: absolute; inset: 0 40px 30px 30px; border-radius: 200px 200px 22px 22px; overflow: hidden; background: #ddd; }
+    .hero-art .sun { position: absolute; right: 10px; top: 20px; width: 130px; height: 130px; border-radius: 50%; background: var(--red); }
+    .hero-art .note {
+      position: absolute; left: 0; bottom: 0; display: flex; align-items: center; gap: 12px; padding: 14px 18px 14px 14px;
+      border-radius: 16px; background: var(--white); box-shadow: 0 24px 50px -20px rgba(0, 0, 0, 0.35); font-weight: 700;
+    }
+    .note .dot { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: var(--red); color: var(--white); }
+    .note small { display: block; font-weight: 500; color: var(--muted); font-size: 13px; }
+
+    /* ── posts ─────────────────────────────── */
+    section.block { padding: 90px 0; }
+    .head { display: flex; align-items: end; justify-content: space-between; margin-bottom: 34px; }
+    h2 { margin: 10px 0 0; font-size: 44px; line-height: 1; letter-spacing: -0.04em; font-weight: 800; }
+    .more { font-weight: 700; font-size: 15px; display: inline-flex; gap: 8px; align-items: center; }
+    .cats { display: flex; gap: 8px; margin-bottom: 30px; }
+    .cats span { padding: 8px 16px; border-radius: 999px; border: 1px solid var(--line); font-weight: 600; font-size: 14px; color: #444; }
+    .cats span.on { background: var(--ink); border-color: var(--ink); color: var(--white); }
+    .posts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 34px 26px; }
+    .post .pic { height: 230px; border-radius: 14px; overflow: hidden; background: #e5e5e5; }
+    .tag { display: inline-block; margin-top: 18px; font-size: 12px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--red); }
+    .post h3 { margin: 8px 0 10px; font-size: 22px; line-height: 1.2; letter-spacing: -0.025em; font-weight: 700; }
+    .post p { margin: 0; font-family: var(--serif); color: #555; line-height: 1.55; font-size: 16px; }
+    .by { display: flex; align-items: center; gap: 10px; margin-top: 16px; font-size: 13.5px; color: var(--muted); }
+    .by .av { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; color: var(--white); font-size: 11px; font-weight: 700; }
+    .by b { color: var(--ink); font-weight: 600; }
+
+    /* ── featured ──────────────────────────── */
+    .featured { background: var(--ink); color: var(--white); }
+    .feat-grid { display: grid; grid-template-columns: 1.15fr 1fr; gap: 56px; align-items: center; }
+    .feat-grid .pic { height: 440px; border-radius: 18px; overflow: hidden; }
+    .featured h2 { font-size: 50px; margin: 14px 0 18px; }
+    .featured p { font-family: var(--serif); font-size: 19px; line-height: 1.6; color: #cfcfcf; margin: 0 0 28px; }
+    .featured .by { color: #a8a8a8; }
+    .featured .by b { color: var(--white); }
+
+    /* ── article + editor ──────────────────── */
+    .duo { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+    .article { padding: 40px 44px; border: 1px solid var(--line); border-radius: 20px; background: var(--white); }
+    .article h3 { margin: 12px 0 16px; font-size: 34px; line-height: 1.08; letter-spacing: -0.035em; font-weight: 800; }
+    .article .meta { display: flex; gap: 16px; align-items: center; padding-bottom: 20px; margin-bottom: 22px; border-bottom: 1px solid var(--line); font-size: 14px; color: var(--muted); }
+    .article p { margin: 0 0 16px; font-family: var(--serif); font-size: 18px; line-height: 1.7; color: #262626; }
+    .article p:first-of-type::first-letter { float: left; margin: 6px 10px 0 0; font-family: var(--sans); font-weight: 800; font-size: 64px; line-height: 0.8; color: var(--red); }
+    .article blockquote { margin: 22px 0; padding: 4px 0 4px 20px; border-left: 3px solid var(--red); font-family: var(--serif); font-style: italic; font-size: 21px; line-height: 1.5; }
+    .actions { display: flex; gap: 10px; margin-top: 24px; }
+    .actions span { display: inline-flex; gap: 7px; align-items: center; padding: 8px 14px; border-radius: 999px; border: 1px solid var(--line); font-size: 13.5px; font-weight: 600; }
+    .actions span.on { border-color: var(--red); color: var(--red); }
+
+    .editor { border-radius: 20px; overflow: hidden; border: 1px solid var(--line); background: var(--paper); display: grid; grid-template-rows: auto 1fr auto; }
+    .ed-top { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; background: var(--white); border-bottom: 1px solid var(--line); }
+    .ed-top small { color: var(--muted); font-size: 13px; }
+    .ed-top .btn { padding: 9px 18px; font-size: 14px; }
+    .tools { display: flex; gap: 4px; }
+    .tools span { width: 34px; height: 34px; border-radius: 9px; display: grid; place-items: center; font-weight: 700; font-size: 15px; color: #444; }
+    .tools span.on { background: var(--ink); color: var(--white); }
+    .ed-body { padding: 34px 40px; background: var(--white); margin: 16px; border-radius: 14px; box-shadow: 0 10px 30px -20px rgba(0, 0, 0, 0.3); }
+    .ed-body .title { font-size: 32px; font-weight: 800; letter-spacing: -0.035em; line-height: 1.1; margin: 10px 0 18px; }
+    .ed-body p { margin: 0 0 14px; font-family: var(--serif); font-size: 17.5px; line-height: 1.7; color: #333; }
+    .caret { display: inline-block; width: 2px; height: 22px; margin-left: 1px; vertical-align: -4px; background: var(--red); }
+    .ed-body .imgslot { height: 120px; margin: 16px 0; border-radius: 12px; border: 2px dashed #d6d6d2; display: grid; place-items: center; color: var(--muted); font-size: 14px; font-weight: 600; }
+    .ed-foot { display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; font-size: 13px; color: var(--muted); }
+    .ed-foot .chips { display: flex; gap: 6px; }
+    .ed-foot .chips span { padding: 5px 11px; border-radius: 999px; background: var(--white); border: 1px solid var(--line); font-weight: 600; color: #444; }
+
+    /* ── newsletter + footer ───────────────── */
+    .news { display: grid; grid-template-columns: 1fr auto; gap: 30px; align-items: center; padding: 50px 56px; border-radius: 26px; background: var(--red); color: var(--white); }
+    .news h2 { margin: 0 0 8px; }
+    .news p { margin: 0; font-family: var(--serif); font-size: 18px; opacity: 0.9; }
+    .field { display: flex; gap: 8px; padding: 6px; border-radius: 999px; background: var(--white); }
+    .field span { padding: 0 18px; align-self: center; color: var(--muted); min-width: 240px; }
+    .field .btn { background: var(--ink); color: var(--white); }
+    footer { padding: 40px 0; display: flex; justify-content: space-between; align-items: center; color: var(--muted); font-size: 14px; }
+
+    /* ── responsive ────────────────────────── */
+    @media (max-width: 900px) {
+      .wrap { width: calc(100% - 36px); }
+      .links, .nav-right .icon { display: none; }
+      .hero-grid { grid-template-columns: 1fr; gap: 26px; padding: 30px 0 50px; }
+      h1 { font-size: 54px; }
+      .lead { font-size: 18px; }
+      .ctas .btn { padding: 13px 18px; font-size: 15px; }
+      .proof { margin-top: 26px; font-size: 13px; }
+      .hero-art { height: 360px; }
+      .hero-art .frame { inset: 0 24px 26px 18px; border-radius: 150px 150px 18px 18px; }
+      .hero-art .sun { width: 90px; height: 90px; }
+      section.block { padding: 60px 0; }
+      h2, .featured h2 { font-size: 34px; }
+      .cats { overflow: hidden; }
+      .posts, .feat-grid, .duo { grid-template-columns: 1fr; }
+      .feat-grid .pic { height: 260px; }
+      .article, .ed-body { padding: 26px 22px; }
+      .news { grid-template-columns: 1fr; padding: 34px 24px; }
+      .field span { min-width: 0; flex: 1; }
+      .ed-top small { display: none; }
+      .tools span:nth-child(n+5) { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e9e9e9" /><stop offset="1" stop-color="#bdbdbd" /></linearGradient>
+      <linearGradient id="rock" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4a4a4a" /><stop offset="1" stop-color="#111" /></linearGradient>
+      <linearGradient id="fog" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity="0" /><stop offset="1" stop-color="#f2f2f2" /></linearGradient>
+      <linearGradient id="wall" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#2c2c2c" /><stop offset="1" stop-color="#6d6d6d" /></linearGradient>
+      <radialGradient id="glow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ff4d4f" /><stop offset=".45" stop-color="#e3262c" stop-opacity=".55" /><stop offset="1" stop-color="#000" stop-opacity="0" /></radialGradient>
+    </defs>
+    <!-- logo -->
+    <symbol id="logo" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#e3262c" /><path fill="#fff" d="M9 7h8.5c4 0 6.5 2 6.5 5.2 0 2-1 3.4-2.7 4 2.2.6 3.4 2.2 3.4 4.4 0 3.4-2.7 5.4-6.9 5.4H9zm4.4 3.6v4.6h3.6c1.7 0 2.7-.8 2.7-2.3s-1-2.3-2.7-2.3zm0 8v5.2h4c1.9 0 3-.9 3-2.6s-1.1-2.6-3-2.6z" /><path fill="#e3262c" d="M9 16.2l6-1.4v2.4z" /></symbol>
+    <!-- covers: all original, black-and-white + one red -->
+    <symbol id="c-mountain" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice">
+      <rect width="400" height="300" fill="url(#sky)" />
+      <path fill="#8e8e8e" d="M0 210l70-60 50 30 60-70 70 60 60-40 90 70v100H0z" />
+      <path fill="url(#rock)" d="M90 300l110-210 30 40 20-20 110 190z" />
+      <path fill="#f4f4f4" d="M200 90l-26 50 14-6 12 14 10-20 14 12 6-10-30-40z" />
+      <path fill="#2a2a2a" d="M0 250l60-30 50 20 40-10v70H0zM300 300l40-60 60 30v30z" />
+      <rect y="200" width="400" height="100" fill="url(#fog)" />
+    </symbol>
+    <symbol id="c-building" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice">
+      <rect width="400" height="300" fill="#d9d9d9" />
+      <path fill="url(#wall)" d="M60 300V70l170-50v280z" />
+      <path fill="#9a9a9a" d="M230 20l120 60v220H230z" />
+      <g fill="#1a1a1a" opacity=".55"><path d="M80 90l130-38v14L80 104zM80 130l130-36v14L80 144zM80 170l130-34v14L80 184zM80 210l130-32v14L80 224zM80 250l130-30v14L80 264z" /></g>
+      <g fill="#fff" opacity=".35"><path d="M250 70l80 40v12l-80-40zM250 110l80 38v12l-80-38zM250 150l80 36v12l-80-36zM250 190l80 34v12l-80-34z" /></g>
+    </symbol>
+    <symbol id="c-desk" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice">
+      <rect width="400" height="300" fill="#e8e8e6" />
+      <rect x="90" y="70" width="190" height="122" rx="8" fill="#2b2b2b" transform="rotate(-8 185 131)" />
+      <rect x="100" y="80" width="170" height="102" rx="3" fill="#f6f6f6" transform="rotate(-8 185 131)" />
+      <rect x="70" y="190" width="240" height="14" rx="6" fill="#9c9c9c" transform="rotate(-8 190 197)" />
+      <circle cx="320" cy="90" r="26" fill="#1c1c1c" /><circle cx="320" cy="90" r="17" fill="#5a3a2a" />
+      <rect x="290" y="190" width="70" height="90" rx="4" fill="#fff" transform="rotate(14 325 235)" />
+      <rect x="40" y="230" width="90" height="8" rx="4" fill="#e3262c" transform="rotate(-24 85 234)" />
+    </symbol>
+    <symbol id="c-red" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice">
+      <rect width="400" height="300" fill="#0c0c0c" />
+      <circle cx="210" cy="150" r="170" fill="url(#glow)" />
+      <path fill="none" stroke="#ff5a5e" stroke-width="3" d="M40 220C120 200 150 90 210 150s110-40 160-110" />
+      <path fill="none" stroke="#e3262c" stroke-width="10" stroke-linecap="round" d="M70 240C140 210 170 120 220 160s100-30 150-90" opacity=".7" />
+    </symbol>
+    <symbol id="c-waves" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice">
+      <rect width="400" height="300" fill="#f0f0f0" />
+      <g fill="none" stroke="#1d1d1d" stroke-width="2"><path d="M0 80c40-20 80 20 120 0s80-20 120 0 80 20 120 0 40-10 40-10" /><path d="M0 110c40-20 80 20 120 0s80-20 120 0 80 20 120 0 40-10 40-10" /><path d="M0 140c40-20 80 20 120 0s80-20 120 0 80 20 120 0 40-10 40-10" /><path d="M0 170c40-20 80 20 120 0s80-20 120 0 80 20 120 0 40-10 40-10" /><path d="M0 200c40-20 80 20 120 0s80-20 120 0 80 20 120 0 40-10 40-10" /><path d="M0 230c40-20 80 20 120 0s80-20 120 0 80 20 120 0 40-10 40-10" /></g>
+      <circle cx="300" cy="70" r="30" fill="#e3262c" />
+    </symbol>
+    <symbol id="c-road" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice">
+      <rect width="400" height="300" fill="#cfcfcf" />
+      <path fill="#7a7a7a" d="M0 170l90-40 70 20 80-50 80 40 80-30v190H0z" />
+      <path fill="#1e1e1e" d="M170 300l40-140h10l60 140z" />
+      <path fill="none" stroke="#fff" stroke-width="3" stroke-dasharray="10 12" d="M215 165l22 135" />
+      <path fill="#3a3a3a" d="M0 300V210l120 20 50 70zM400 300v-80l-120 30-10 50z" />
+    </symbol>
+  </svg>
+
+  <div class="wrap hero" id="top">
+    <header class="nav">
+      <a class="logo" href="#top"><svg><use href="#logo" /></svg>Beacon</a>
+      <nav class="links"><a class="on" href="#top">Home</a><a href="#posts">Categories</a><a href="#featured">About</a><a href="#news">Contact</a></nav>
+      <div class="nav-right">
+        <span class="icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7" /><path d="M20 20l-4-4" /></svg></span>
+        <span class="icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" /></svg></span>
+        <a class="btn btn-red" href="#write"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16z" /></svg>Write</a>
+      </div>
+    </header>
+
+    <section class="hero-grid">
+      <div>
+        <span class="kicker"><i></i>Ideas worth reading</span>
+        <h1>Read. Learn.<br />Be <em>Inspired.</em></h1>
+        <p class="lead">Thoughts, ideas and stories, all in one place. Essays from writers who care about the craft.</p>
+        <div class="ctas">
+          <a class="btn btn-red" href="#posts">Explore Articles
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+          </a>
+          <a class="btn btn-line" href="#write">Start Writing</a>
+        </div>
+        <div class="proof">
+          <div class="faces"><span style="background:#111">AR</span><span style="background:#e3262c">MK</span><span style="background:#6b6b6b">JS</span><span style="background:#2a2a2a">+</span></div>
+          <span><b>12,000+ readers</b> join every week</span>
+        </div>
+      </div>
+      <div class="hero-art">
+        <div class="sun"></div>
+        <div class="frame"><svg class="cover"><use href="#c-mountain" /></svg></div>
+        <div class="note"><span class="dot">✦</span><div>Bold Ideas, Bigger Dreams<small>Featured essay · 8 min read</small></div></div>
+      </div>
+    </section>
+  </div>
+
+  <section class="block" id="posts" style="padding-top:20px">
+    <div class="wrap">
+      <div class="head"><div><span class="kicker"><i></i>Fresh this week</span><h2>Latest Posts</h2></div><a class="more" href="#posts">View all →</a></div>
+      <div class="cats"><span class="on">All</span><span>Design</span><span>Technology</span><span>Culture</span><span>Productivity</span><span>Life</span></div>
+      <div class="posts">
+        <article class="post" id="post-1">
+          <div class="pic"><svg class="cover"><use href="#c-building" /></svg></div>
+          <span class="tag">Design</span><h3>What brutalist buildings teach us about honest design</h3>
+          <p>Concrete, structure and nothing to hide: lessons for anyone making things for screens.</p>
+          <div class="by"><span class="av" style="background:#111">AR</span><b>Ayesha Rahman</b>· 6 min read</div>
+        </article>
+        <article class="post" id="post-2">
+          <div class="pic"><svg class="cover"><use href="#c-desk" /></svg></div>
+          <span class="tag">Productivity</span><h3>The two-hour workday: doing less, finishing more</h3>
+          <p>How one rule about focus changed the way I plan every week.</p>
+          <div class="by"><span class="av" style="background:#e3262c">MK</span><b>Marcus Kim</b>· 5 min read</div>
+        </article>
+        <article class="post" id="post-3">
+          <div class="pic"><svg class="cover"><use href="#c-red" /></svg></div>
+          <span class="tag">Technology</span><h3>Why every product now wants to talk to you</h3>
+          <p>Chat is the new homepage. Here's what gets lost when everything becomes a conversation.</p>
+          <div class="by"><span class="av" style="background:#6b6b6b">JS</span><b>Julia Santos</b>· 7 min read</div>
+        </article>
+        <article class="post">
+          <div class="pic"><svg class="cover"><use href="#c-waves" /></svg></div>
+          <span class="tag">Culture</span><h3>The quiet return of the long read</h3>
+          <p>Attention spans are shrinking, yet 10,000-word essays are finding new fans.</p>
+          <div class="by"><span class="av" style="background:#2a2a2a">LT</span><b>Leo Turner</b>· 9 min read</div>
+        </article>
+        <article class="post">
+          <div class="pic"><svg class="cover"><use href="#c-road" /></svg></div>
+          <span class="tag">Life</span><h3>A year of saying no to good opportunities</h3>
+          <p>What happened when I protected my time like it was the only thing I owned.</p>
+          <div class="by"><span class="av" style="background:#e3262c">NF</span><b>Nadia Farooq</b>· 6 min read</div>
+        </article>
+        <article class="post">
+          <div class="pic"><svg class="cover"><use href="#c-mountain" /></svg></div>
+          <span class="tag">Design</span><h3>Whitespace is not empty space</h3>
+          <p>A short guide to letting your layouts breathe, with ten examples.</p>
+          <div class="by"><span class="av" style="background:#111">AR</span><b>Ayesha Rahman</b>· 4 min read</div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="block featured" id="featured">
+    <div class="wrap feat-grid">
+      <div class="pic"><svg class="cover"><use href="#c-red" /></svg></div>
+      <div>
+        <span class="kicker"><i></i>Editor's pick</span>
+        <h2>Ideas turn into impact when you write them down</h2>
+        <p>Every big change starts as a small note. In this essay, five founders share the notebooks, drafts and late-night posts that shaped what they built next.</p>
+        <div class="by"><span class="av" style="background:#e3262c">MK</span><b>Marcus Kim</b>· 12 min read</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="write">
+    <div class="wrap">
+      <div class="head"><div><span class="kicker"><i></i>Read and write</span><h2>A home for your words</h2></div></div>
+      <div class="duo">
+        <article class="article" id="article">
+          <span class="tag" style="margin:0">Design</span>
+          <h3>What brutalist buildings teach us about honest design</h3>
+          <div class="meta"><div class="by" style="margin:0"><span class="av" style="background:#111">AR</span><b>Ayesha Rahman</b></div><span>Nov 18, 2026</span><span>6 min read</span></div>
+          <p>Walk past a brutalist building and it tells you exactly what it is. The beams carry weight, the concrete shows its formwork, and nothing pretends to be something else.</p>
+          <blockquote>The best interfaces, like the best buildings, show you how they work.</blockquote>
+          <p>Digital products could learn from that honesty. Clear structure, visible states and no decoration that hides how things work.</p>
+          <div class="actions"><span class="on">♥ 248</span><span>💬 36</span><span>↗ Share</span><span>🔖 Save</span></div>
+        </article>
+
+        <div class="editor" id="editor">
+          <div class="ed-top">
+            <div class="tools"><span class="on">B</span><span><i>I</i></span><span>H</span><span>❝</span><span>🔗</span><span>▣</span></div>
+            <div style="display:flex;gap:14px;align-items:center"><small>Draft saved · just now</small><a class="btn btn-red" href="#write">Publish</a></div>
+          </div>
+          <div class="ed-body">
+            <span class="tag" style="margin:0">Draft · Technology</span>
+            <div class="title">Notes on building calmer software</div>
+            <p>Most apps compete for attention. A few are starting to give it back: fewer notifications, slower feeds, and screens that know when to stop.</p>
+            <div class="imgslot">＋ Add a cover image</div>
+            <p>This is what I learned rebuilding our product around one question: what if it worked better when people used it less<span class="caret"></span></p>
+          </div>
+          <div class="ed-foot"><div class="chips"><span>#design</span><span>#product</span><span>+ tag</span></div><span>214 words · 1 min read</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="news" style="padding-top:0">
+    <div class="wrap">
+      <div class="news">
+        <div><h2>One good essay, every Sunday</h2><p>No noise, no ads. Just the best of Beacon in your inbox.</p></div>
+        <div class="field"><span>you@example.com</span><a class="btn" href="#news">Subscribe</a></div>
+      </div>
+      <footer><a class="logo" href="#top"><svg><use href="#logo" /></svg>Beacon</a><span>© 2026 Beacon. Ideas turn into impact.</span></footer>
+    </div>
+  </section>
+</body>
+</html>

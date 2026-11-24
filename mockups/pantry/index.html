@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pantry Traker — Track your pantry, smarter</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --basil: #1d6b33;
+      --basil-600: #155226;
+      --sage: #a8cfa6;
+      --sage-2: #d6e8d2;
+      --oat: #f1f1ec;
+      --oat-2: #e8e8e1;
+      --ink: #15201a;
+      --muted: #5f6b63;
+      --line: #e1e4dc;
+      --white: #ffffff;
+      --amber: #f2a51c;
+      --tomato: #e0533d;
+      --shadow: 0 24px 60px -28px rgba(21, 60, 32, 0.35), 0 2px 6px rgba(21, 32, 26, 0.05);
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: "Outfit", "Segoe UI", system-ui, sans-serif; color: var(--ink); background: var(--oat); -webkit-font-smoothing: antialiased; }
+    a { color: inherit; text-decoration: none; }
+    svg { display: block; }
+    .wrap { width: min(1240px, 100% - 56px); margin: 0 auto; }
+    .btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 24px; border-radius: 999px; font-weight: 600; font-size: 15.5px; white-space: nowrap; }
+    .btn-green { background: var(--basil); color: var(--white); box-shadow: 0 12px 24px -12px rgba(29, 107, 51, 0.8); }
+    .btn-green:hover { background: var(--basil-600); }
+
+    /* ── nav ─────────────────────────────────── */
+    .nav { display: flex; align-items: center; justify-content: space-between; padding: 24px 0; }
+    .logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 19px; line-height: 1; letter-spacing: -0.01em; }
+    .logo svg { width: 42px; height: 42px; color: var(--basil); }
+    .links { display: flex; gap: 36px; font-weight: 500; font-size: 15px; }
+    .links a.on { color: var(--basil); font-weight: 600; }
+
+    /* ── hero ────────────────────────────────── */
+    .hero { overflow: hidden; }
+    .hero-grid { display: grid; grid-template-columns: 1.05fr 1fr; gap: 30px; align-items: center; padding: 40px 0 70px; }
+    .pill { display: inline-flex; align-items: center; gap: 10px; padding: 9px 16px; border-radius: 999px; background: var(--white); border: 1px solid var(--line); font-weight: 600; font-size: 14px; }
+    .pill i { width: 9px; height: 9px; border-radius: 50%; background: var(--basil); }
+    h1 { position: relative; margin: 24px 0 20px; font-size: clamp(44px, 5.8vw, 78px); line-height: 1.02; letter-spacing: -0.035em; font-weight: 800; }
+    h1 em { position: relative; font-style: normal; color: var(--basil); }
+    h1 em svg { position: absolute; left: 0; right: 0; bottom: -10px; width: 100%; height: 16px; }
+    .spark { position: absolute; left: 62%; top: -46px; color: var(--basil); }
+    .lead { margin: 0; max-width: 38ch; font-size: 19px; line-height: 1.55; color: #3c4840; }
+    .ctas { display: flex; align-items: center; gap: 22px; margin-top: 32px; }
+    .ctas .btn-green { padding: 16px 28px; font-size: 16.5px; }
+    .demo { display: inline-flex; align-items: center; gap: 12px; font-weight: 600; }
+    .demo span { width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; background: var(--white); border: 2px solid #f0d9b4; }
+    .perks { display: flex; gap: 30px; margin-top: 48px; }
+    .perk { display: flex; align-items: center; gap: 12px; font-weight: 600; font-size: 15px; line-height: 1.25; }
+    .perk span { width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; background: var(--sage-2); color: var(--basil); flex: none; }
+
+    .stage { position: relative; height: 600px; }
+    .blob { position: absolute; inset: 40px -40px 20px 10px; }
+
+    /* phone UI (used in the hero and the screens section) */
+    .phone {
+      position: relative; width: 300px; padding: 10px; border-radius: 46px; background: #1b1f1c;
+      box-shadow: 0 40px 80px -30px rgba(21, 60, 32, 0.55), inset 0 0 0 2px #2f3631;
+    }
+    .screen { position: relative; overflow: hidden; height: 600px; border-radius: 37px; background: #fbfbf8; padding: 46px 18px 18px; }
+    .island { position: absolute; top: 12px; left: 50%; width: 92px; height: 24px; transform: translateX(-50%); border-radius: 20px; background: #1b1f1c; }
+    .status { position: absolute; top: 15px; left: 26px; right: 26px; display: flex; justify-content: space-between; font-size: 12px; font-weight: 600; }
+    .app-head { display: flex; align-items: center; justify-content: space-between; margin: 10px 2px 14px; }
+    .app-head h3 { margin: 0; font-size: 24px; font-weight: 700; letter-spacing: -0.02em; }
+    .app-head small { display: block; font-size: 12px; color: var(--muted); font-weight: 500; }
+    .round { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: var(--oat); }
+    .chips { display: flex; gap: 6px; margin-bottom: 14px; }
+    .chips span { padding: 6px 12px; border-radius: 999px; background: var(--oat); font-size: 12.5px; font-weight: 600; color: #46524a; }
+    .chips span.on { background: var(--basil); color: var(--white); }
+    .item { display: flex; align-items: center; gap: 12px; padding: 10px; margin-bottom: 8px; border-radius: 16px; background: var(--white); border: 1px solid #eef0ea; }
+    .emoji { width: 44px; height: 44px; border-radius: 13px; display: grid; place-items: center; background: var(--oat); font-size: 24px; flex: none; }
+    .item b { display: block; font-size: 15px; font-weight: 600; }
+    .item small { font-size: 12.5px; color: var(--muted); }
+    .item .state { margin-left: auto; padding: 4px 9px; border-radius: 999px; font-size: 11.5px; font-weight: 700; }
+    .low { background: #fdf0d8; color: #9a5e00; }
+    .ok { background: var(--sage-2); color: var(--basil); }
+    .exp { background: #fbe2dd; color: #a8321f; }
+    .tabbar { position: absolute; left: 14px; right: 14px; bottom: 14px; display: flex; justify-content: space-around; padding: 10px; border-radius: 20px; background: var(--white); border: 1px solid #eef0ea; }
+    .tabbar span { width: 40px; height: 32px; display: grid; place-items: center; border-radius: 10px; color: #8a958d; }
+    .tabbar span.on { background: var(--sage-2); color: var(--basil); }
+    .fab { position: absolute; right: 22px; bottom: 82px; width: 50px; height: 50px; border-radius: 16px; display: grid; place-items: center; background: var(--basil); color: var(--white); font-size: 28px; box-shadow: 0 12px 24px -10px rgba(29, 107, 51, 0.9); }
+
+    .hero .phone { position: absolute; left: 140px; top: 0; transform: rotate(6deg); }
+    .notif {
+      position: absolute; display: flex; align-items: center; gap: 12px; padding: 14px 18px 14px 14px; border-radius: 18px;
+      background: var(--white); box-shadow: var(--shadow); font-weight: 600;
+    }
+    .notif .bell { width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; background: #fdf0d8; font-size: 22px; }
+    .notif small { display: block; font-weight: 500; color: var(--muted); font-size: 13px; }
+    .hero .notif { right: 0; top: 150px; }
+    .hero .notif2 { left: 0; bottom: 70px; top: auto; right: auto; }
+    .notif2 .bell { background: var(--sage-2); }
+
+    /* ── sections ────────────────────────────── */
+    section.block { padding: 110px 0; }
+    .eyebrow { display: inline-block; padding: 7px 14px; border-radius: 999px; background: var(--sage-2); color: var(--basil); font-weight: 700; font-size: 13px; }
+    h2 { margin: 16px 0 12px; font-size: 48px; line-height: 1.06; letter-spacing: -0.03em; font-weight: 800; }
+    .sub { margin: 0; max-width: 52ch; font-size: 17.5px; line-height: 1.6; color: var(--muted); }
+    .center { text-align: center; }
+    .center .sub { margin: 0 auto; }
+    .features { background: var(--white); }
+    .fgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-top: 54px; }
+    .fcard { padding: 26px; border-radius: 24px; background: var(--oat); }
+    .fcard .ico { width: 48px; height: 48px; border-radius: 14px; display: grid; place-items: center; background: var(--basil); color: var(--white); }
+    .fcard h3 { margin: 18px 0 8px; font-size: 20px; letter-spacing: -0.01em; }
+    .fcard p { margin: 0; color: var(--muted); line-height: 1.55; font-size: 15px; }
+
+    .screens { background: linear-gradient(180deg, var(--oat), var(--sage-2)); }
+    .trio { display: flex; justify-content: center; gap: 36px; margin-top: 60px; }
+    .trio .phone:nth-child(2) { transform: translateY(-30px); }
+    .bar { height: 7px; border-radius: 7px; background: #eef0ea; overflow: hidden; margin-top: 7px; }
+    .bar i { display: block; height: 100%; border-radius: 7px; }
+    .check { width: 24px; height: 24px; border-radius: 8px; border: 2px solid #cfd6cc; flex: none; display: grid; place-items: center; }
+    .check.on { background: var(--basil); border-color: var(--basil); color: var(--white); }
+    .done b { text-decoration: line-through; color: #9aa39c; }
+    .suggest { margin-top: 12px; padding: 14px; border-radius: 16px; background: var(--sage-2); }
+    .suggest b { font-size: 14px; }
+    .suggest p { margin: 4px 0 10px; font-size: 12.5px; color: #3c4840; }
+    .suggest span { display: inline-block; padding: 7px 12px; border-radius: 999px; background: var(--basil); color: var(--white); font-size: 12.5px; font-weight: 600; }
+    .ring-card { display: flex; align-items: center; gap: 14px; padding: 14px; border-radius: 18px; background: var(--basil); color: var(--white); margin-bottom: 14px; }
+    .ring-card strong { font-size: 26px; }
+    .ring-card small { display: block; opacity: 0.85; font-size: 12.5px; }
+
+    .download { margin: 0 auto; padding: 60px; border-radius: 34px; background: var(--basil); color: var(--white); display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 30px; }
+    .download h2 { margin: 0 0 10px; }
+    .download .sub { color: rgba(255, 255, 255, 0.8); }
+    .stores { display: flex; gap: 12px; }
+    .store { display: flex; align-items: center; gap: 10px; padding: 12px 18px; border-radius: 14px; background: #0f1a13; color: var(--white); font-weight: 600; }
+    .store small { display: block; font-size: 11px; font-weight: 500; opacity: 0.75; }
+    footer { padding: 40px 0; display: flex; justify-content: space-between; align-items: center; color: var(--muted); font-size: 14px; }
+
+    /* ── responsive ──────────────────────────── */
+    @media (max-width: 900px) {
+      .wrap { width: calc(100% - 36px); }
+      .links, .nav .btn { display: none; }
+      .hero-grid { grid-template-columns: 1fr; padding: 16px 0 40px; }
+      h1 { font-size: 46px; }
+      .spark { left: 72%; top: -30px; }
+      .lead { font-size: 16.5px; }
+      .ctas { gap: 14px; margin-top: 26px; }
+      .ctas .btn-green { padding: 14px 22px; font-size: 15px; }
+      .perks { flex-direction: column; gap: 12px; margin-top: 30px; }
+      .stage { height: 520px; }
+      .hero .phone { left: 50%; margin-left: -130px; width: 260px; transform: rotate(4deg); }
+      .hero .phone .screen { height: 520px; }
+      .hero .notif { top: 90px; right: -6px; transform: scale(0.85); transform-origin: right; }
+      .hero .notif2 { left: -6px; right: auto; top: auto; bottom: 40px; transform: scale(0.85); transform-origin: left; }
+      section.block { padding: 70px 0; }
+      h2 { font-size: 34px; }
+      .fgrid { grid-template-columns: 1fr; }
+      .trio { flex-direction: column; align-items: center; }
+      .trio .phone:nth-child(2) { transform: none; }
+      .download { grid-template-columns: 1fr; padding: 36px 24px; }
+    }
+  </style>
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="cart" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 8h6l5 22h22l5-15H13" /><circle cx="18" cy="38" r="3" /><circle cx="34" cy="38" r="3" /><path d="M22 16l5 5 11-12" />
+    </symbol>
+  </svg>
+
+  <div class="hero" id="top">
+    <div class="wrap">
+      <header class="nav">
+        <a class="logo" href="#top"><svg><use href="#cart" /></svg><span>Pantry<br />Traker</span></a>
+        <nav class="links">
+          <a class="on" href="#top">Home</a>
+          <a href="#features">Features</a>
+          <a href="#screens">How It Works</a>
+          <a href="#download">Download</a>
+        </nav>
+        <a class="btn btn-green" href="#download">Get Started
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+        </a>
+      </header>
+
+      <div class="hero-grid">
+        <div>
+          <span class="pill"><i></i>Smart Inventory. Less Waste.</span>
+          <h1>
+            <svg class="spark" width="64" height="44" viewBox="0 0 64 44" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"><path d="M8 40L4 16M22 36l8-30M36 40l22-14" /></svg>
+            Track Your Pantry,<br /><em>Smarter<svg viewBox="0 0 300 16" preserveAspectRatio="none" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"><path d="M4 11C70 4 160 3 296 9" /></svg></em>.
+          </h1>
+          <p class="lead">Keep track of your groceries, get notified before you run out, and reduce food waste.</p>
+          <div class="ctas">
+            <a class="btn btn-green" href="#download">Get Started Free
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+            </a>
+            <a class="demo" href="#screens"><span><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l13-7.5z" /></svg></span>Watch Demo</a>
+          </div>
+          <div class="perks">
+            <div class="perk"><span><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7" /></svg></span>Track Inventory<br />Easily</div>
+            <div class="perk"><span><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19c0-8 6-14 15-14 0 9-6 15-14 15" /><path d="M5 19l8-8" /></svg></span>Reduce<br />Food Waste</div>
+            <div class="perk"><span><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L4 14h7l-1 8 9-12h-7z" /></svg></span>Get Smart<br />Reminders</div>
+          </div>
+        </div>
+
+        <div class="stage">
+          <svg class="blob" viewBox="0 0 600 560" preserveAspectRatio="none" aria-hidden="true"><path fill="#a8cfa6" opacity=".55" d="M150 60c100-60 260-50 340 30s90 230 40 320-170 150-300 140S30 470 20 360 50 120 150 60z" /></svg>
+
+          <div class="phone" id="screen-pantry">
+            <div class="screen">
+              <span class="island"></span>
+              <div class="status"><span>9:41</span><span>●●● 100%</span></div>
+              <div class="app-head"><div><small>Good morning, Sara</small><h3>Your Pantry</h3></div>
+                <span class="round"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7" /><path d="M20 20l-4-4" /></svg></span></div>
+              <div class="chips"><span class="on">All</span><span>Fresh</span><span>Dry</span><span>Frozen</span></div>
+              <div class="item"><span class="emoji">🥛</span><div><b>Milk</b><small>2 left</small></div><span class="state low">Low</span></div>
+              <div class="item"><span class="emoji">🥚</span><div><b>Eggs</b><small>1 pack</small></div><span class="state ok">Good</span></div>
+              <div class="item"><span class="emoji">🍞</span><div><b>Bread</b><small>Expires tomorrow</small></div><span class="state exp">Soon</span></div>
+              <div class="item"><span class="emoji">🍎</span><div><b>Apples</b><small>4 left</small></div><span class="state ok">Good</span></div>
+              <div class="item"><span class="emoji">🧀</span><div><b>Cheddar</b><small>200 g</small></div><span class="state ok">Good</span></div>
+              <span class="fab">+</span>
+              <div class="tabbar">
+                <span class="on"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 10l8-6 8 6v10H4z" /></svg></span>
+                <span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="8" /><path d="M12 8v4l3 2" /></svg></span>
+                <span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 7h14l-1 12H6z" /><path d="M9 7a3 3 0 0 1 6 0" /></svg></span>
+                <span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="8" r="4" /><path d="M4 20c1-4 4-6 8-6s7 2 8 6" /></svg></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="notif" id="notif-low"><span class="bell">🔔</span><div>Low Stock!<small>Milk — only 2 left</small></div></div>
+          <div class="notif notif2" id="notif-added"><span class="bell">🛒</span><div>Added to your list<small>Milk, Bread</small></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="block features" id="features">
+    <div class="wrap center">
+      <span class="eyebrow">Features</span>
+      <h2>Everything your kitchen needs to know</h2>
+      <p class="sub">Pantry Traker remembers what you have, what's about to expire and what to buy, so you don't have to.</p>
+      <div class="fgrid" style="text-align:left">
+        <div class="fcard"><span class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h10" /></svg></span><h3>Track inventory</h3><p>Add items in seconds by scanning a barcode or typing a name.</p></div>
+        <div class="fcard"><span class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="8" /><path d="M12 8v4l3 2" /></svg></span><h3>Expiry alerts</h3><p>Get a nudge before food goes off, with ideas for using it first.</p></div>
+        <div class="fcard"><span class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 7h14l-1 12H6z" /><path d="M9 7a3 3 0 0 1 6 0" /></svg></span><h3>Smart shopping list</h3><p>Low-stock items land on your list automatically, ready for the shop.</p></div>
+        <div class="fcard"><span class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2" /></svg></span><h3>Waste insights</h3><p>See what you throw away most and how much you've saved each month.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block screens" id="screens">
+    <div class="wrap center">
+      <span class="eyebrow">How it works</span>
+      <h2>Stock, check, shop. That's it.</h2>
+      <p class="sub">Three screens cover the whole routine, from what's in the cupboard to what goes in the basket.</p>
+    </div>
+    <div class="trio">
+      <div class="phone">
+        <div class="screen">
+          <span class="island"></span>
+          <div class="status"><span>9:41</span><span>●●● 100%</span></div>
+          <div class="app-head"><div><small>Fresh</small><h3>Your Pantry</h3></div><span class="round">⚙︎</span></div>
+          <div class="chips"><span>All</span><span class="on">Fresh</span><span>Dry</span><span>Frozen</span></div>
+          <div class="item"><span class="emoji">🥬</span><div><b>Spinach</b><small>1 bag</small></div><span class="state exp">2 days</span></div>
+          <div class="item"><span class="emoji">🍅</span><div><b>Tomatoes</b><small>5 left</small></div><span class="state ok">Good</span></div>
+          <div class="item"><span class="emoji">🥛</span><div><b>Milk</b><small>2 left</small></div><span class="state low">Low</span></div>
+          <div class="item"><span class="emoji">🫐</span><div><b>Blueberries</b><small>1 box</small></div><span class="state exp">3 days</span></div>
+          <div class="item"><span class="emoji">🥕</span><div><b>Carrots</b><small>6 left</small></div><span class="state ok">Good</span></div>
+          <div class="tabbar"><span class="on">⌂</span><span>◷</span><span>🛒</span><span>☺</span></div>
+        </div>
+      </div>
+
+      <div class="phone" id="screen-expiry">
+        <div class="screen">
+          <span class="island"></span>
+          <div class="status"><span>9:41</span><span>●●● 100%</span></div>
+          <div class="app-head"><div><small>This week</small><h3>Expiring Soon</h3></div><span class="round">⏰</span></div>
+          <div class="ring-card"><span style="font-size:30px">🌱</span><div><strong>£18.40</strong><small>saved this month by using food in time</small></div></div>
+          <div class="item"><span class="emoji">🍞</span><div style="flex:1"><b>Bread</b><small>Tomorrow</small><div class="bar"><i style="width:90%;background:var(--tomato)"></i></div></div></div>
+          <div class="item"><span class="emoji">🥬</span><div style="flex:1"><b>Spinach</b><small>In 2 days</small><div class="bar"><i style="width:70%;background:var(--amber)"></i></div></div></div>
+          <div class="item"><span class="emoji">🫐</span><div style="flex:1"><b>Blueberries</b><small>In 3 days</small><div class="bar"><i style="width:55%;background:var(--amber)"></i></div></div></div>
+          <div class="item"><span class="emoji">🧀</span><div style="flex:1"><b>Cheddar</b><small>In 9 days</small><div class="bar"><i style="width:20%;background:var(--basil)"></i></div></div></div>
+          <div class="tabbar"><span>⌂</span><span class="on">◷</span><span>🛒</span><span>☺</span></div>
+        </div>
+      </div>
+
+      <div class="phone" id="screen-shopping">
+        <div class="screen">
+          <span class="island"></span>
+          <div class="status"><span>9:41</span><span>●●● 100%</span></div>
+          <div class="app-head"><div><small>6 items</small><h3>Shopping List</h3></div><span class="round">＋</span></div>
+          <div class="item"><span class="check on">✓</span><span class="emoji">🥛</span><div class="done"><b>Milk</b><small>2 L</small></div></div>
+          <div class="item"><span class="check on">✓</span><span class="emoji">🍞</span><div class="done"><b>Bread</b><small>1 loaf</small></div></div>
+          <div class="item"><span class="check"></span><span class="emoji">🥚</span><div><b>Eggs</b><small>12 pack</small></div></div>
+          <div class="item"><span class="check"></span><span class="emoji">🍌</span><div><b>Bananas</b><small>6</small></div></div>
+          <div class="suggest"><b>Running low on rice</b><p>You usually buy it every 3 weeks.</p><span>Add to list</span></div>
+          <div class="tabbar"><span>⌂</span><span>◷</span><span class="on">🛒</span><span>☺</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="download">
+    <div class="wrap">
+      <div class="download">
+        <div><h2>Waste less, starting this week</h2><p class="sub">Free on iPhone and Android. Your pantry is ready in five minutes.</p></div>
+        <div class="stores">
+          <a class="store" href="#download"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M16.4 12.6c0-2.5 2-3.6 2.1-3.7-1.2-1.7-3-1.9-3.6-1.9-1.5-.2-3 .9-3.8.9-.8 0-2-.9-3.3-.9-1.7 0-3.3 1-4.2 2.6-1.8 3.1-.5 7.7 1.3 10.2.9 1.2 1.9 2.6 3.2 2.6 1.3-.1 1.8-.8 3.3-.8s2 .8 3.3.8c1.4 0 2.3-1.2 3.1-2.5 1-1.4 1.4-2.8 1.4-2.9-.1 0-2.8-1-2.8-4.4zM14 5.2c.7-.8 1.2-2 1-3.2-1 .1-2.3.7-3 1.5-.7.8-1.2 1.9-1.1 3.1 1.2.1 2.4-.6 3.1-1.4z" /></svg><div><small>Download on the</small>App Store</div></a>
+          <a class="store" href="#download"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M4 2.5l11 9.5-11 9.5c-.6-.3-1-1-1-1.7V4.2c0-.7.4-1.4 1-1.7zm12.6 11l2.6 1.5-3.5 3-2.6-2.3zM16.6 10.5L13.1 8.3l2.6-2.3 3.5 3zm3.8 1.5l-2.6-1.5 0 3 2.6-1.5z" /></svg><div><small>Get it on</small>Google Play</div></a>
+        </div>
+      </div>
+      <footer><a class="logo" href="#top"><svg><use href="#cart" /></svg><span>Pantry<br />Traker</span></a><span>© 2026 Pantry Traker. Less waste, more taste.</span></footer>
+    </div>
+  </section>
+</body>
+</html>

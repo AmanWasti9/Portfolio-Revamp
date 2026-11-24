@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>The Pacer — case study frames</title>
+  <!-- Presentation frames for the portfolio case study.
+       raw/*.png are captured from index.html by scripts/render-mockups.mjs -->
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #444; display: grid; gap: 40px; padding: 40px; justify-content: center; }
+    .frame { position: relative; overflow: hidden; }
+    .bg {
+      background:
+        radial-gradient(700px 520px at 78% 30%, rgba(227, 20, 27, 0.28), transparent 65%),
+        linear-gradient(115deg, #121212 0%, #1b1a19 48%, #0c0c0c 100%);
+    }
+    .bg::before {
+      /* concrete plane + light beam */
+      content: ""; position: absolute; left: -10%; right: -10%; top: 58%; height: 240px; transform: rotate(-14deg);
+      background: linear-gradient(180deg, #3c3a37, #22201e 70%);
+      opacity: 0.85;
+    }
+    .bg::after {
+      content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0.4; mix-blend-mode: overlay;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+    .browser {
+      position: absolute; z-index: 1; border-radius: 14px; overflow: hidden; background: #0c0c0c;
+      box-shadow: 0 50px 100px -30px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.08);
+    }
+    .browser .bar { height: 40px; display: flex; align-items: center; gap: 8px; padding: 0 16px; background: #1a1a1a; border-bottom: 1px solid #262626; }
+    .browser .bar i { width: 11px; height: 11px; border-radius: 50%; background: #3a3a3a; }
+    .browser .bar span { margin-left: 18px; padding: 5px 60px; border-radius: 8px; background: #111; border: 1px solid #2a2a2a; font: 500 12px "Segoe UI", system-ui, sans-serif; color: #8a8a86; }
+    .browser img, .float img { display: block; width: 100%; }
+    .phone {
+      position: absolute; z-index: 2; padding: 12px; border-radius: 54px; background: #050505;
+      box-shadow: 0 60px 120px -40px rgba(0, 0, 0, 0.95), inset 0 0 0 2px #2a2a2a, 0 0 0 1px rgba(255, 255, 255, 0.06);
+    }
+    .phone .screen { overflow: hidden; border-radius: 42px; padding-top: 13%; background: #0b0b0b; }
+    .phone img { display: block; width: 100%; }
+    .phone::after { content: ""; position: absolute; top: 24px; left: 50%; width: 30%; height: 26px; transform: translateX(-50%); border-radius: 20px; background: #050505; }
+    .float { position: absolute; z-index: 2; overflow: hidden; box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.07); }
+    .panel { background: #161616; padding: 34px; }
+  </style>
+</head>
+<body>
+  <!-- 16:9 — desktop + phone -->
+  <section id="showcase" class="frame bg" style="width:1600px;height:900px">
+    <div class="browser" style="left:110px;top:80px;width:1150px">
+      <div class="bar"><i></i><i></i><i></i><span>thepacer.store</span></div>
+      <img src="raw/desktop.png" alt="" />
+    </div>
+    <div class="phone" style="left:1160px;top:150px;width:330px">
+      <div class="screen"><img src="raw/mobile.png" alt="" /></div>
+    </div>
+  </section>
+
+  <!-- 4:5 — mobile hero with a product card -->
+  <section id="detail-1" class="frame bg" style="width:1080px;height:1350px">
+    <div class="phone" style="left:330px;top:70px;width:500px">
+      <div class="screen"><img src="raw/mobile.png" alt="" /></div>
+    </div>
+    <div class="float" style="left:60px;top:860px;width:330px;transform:rotate(-5deg)">
+      <img src="raw/card1.png" alt="" />
+    </div>
+  </section>
+
+  <!-- 4:5 — product page close-up and colourways -->
+  <section id="detail-2" class="frame bg" style="width:1080px;height:1350px">
+    <div class="float panel" style="left:60px;top:70px;width:640px">
+      <img src="raw/buybox.png" alt="" />
+    </div>
+    <div class="float" style="left:740px;top:70px;width:280px"><img src="raw/card2.png" alt="" /></div>
+    <div class="float" style="left:740px;top:500px;width:280px"><img src="raw/card3.png" alt="" /></div>
+    <div class="float" style="left:740px;top:930px;width:280px"><img src="raw/card4.png" alt="" /></div>
+    <div class="float" style="left:60px;top:860px;width:640px"><img src="raw/stage.png" alt="" /></div>
+  </section>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cogni — case study frames</title>
+  <!-- Presentation frames for the portfolio case study.
+       raw/*.png are captured from index.html by scripts/render-mockups.mjs -->
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #222; display: grid; gap: 40px; padding: 40px; justify-content: center; }
+    .frame { position: relative; overflow: hidden; }
+    .bg {
+      background:
+        radial-gradient(900px 600px at 80% 10%, #d9ccff 0%, transparent 60%),
+        radial-gradient(700px 500px at 10% 90%, #e6defe 0%, transparent 60%),
+        #f1edff;
+    }
+    .bg::before {
+      /* faint dot grid */
+      content: ""; position: absolute; inset: 0;
+      background-image: radial-gradient(rgba(90, 43, 230, 0.12) 1.2px, transparent 1.2px);
+      background-size: 26px 26px;
+      mask-image: radial-gradient(ellipse at center, #000 30%, transparent 80%);
+    }
+    .deep { background: radial-gradient(800px 700px at 70% 20%, #8a63ff, transparent 65%), linear-gradient(160deg, #5a2be6, #3a17a8); }
+
+    /* devices */
+    .browser {
+      position: absolute; border-radius: 16px; overflow: hidden; background: #fff;
+      box-shadow: 0 50px 100px -40px rgba(40, 15, 120, 0.55), 0 0 0 1px rgba(90, 43, 230, 0.12);
+    }
+    .browser .bar { height: 40px; display: flex; align-items: center; gap: 8px; padding: 0 16px; background: #f7f5fd; border-bottom: 1px solid #ebe6fb; }
+    .browser .bar i { width: 11px; height: 11px; border-radius: 50%; background: #e1dcf2; }
+    .browser .bar span {
+      margin-left: 18px; padding: 5px 60px; border-radius: 8px; background: #fff; border: 1px solid #ebe6fb;
+      font: 500 12px "Segoe UI", system-ui, sans-serif; color: #6b6880;
+    }
+    .browser img { display: block; width: 100%; }
+    .phone {
+      position: absolute; padding: 12px; border-radius: 54px; background: #121018;
+      box-shadow: 0 60px 120px -40px rgba(30, 10, 90, 0.65), inset 0 0 0 2px #2b2836;
+    }
+    .phone .screen { overflow: hidden; border-radius: 42px; padding-top: 13%; background: #f8f6ff; }
+    .phone img { display: block; width: 100%; }
+    .phone::after {
+      content: ""; position: absolute; top: 24px; left: 50%; width: 30%; height: 26px; transform: translateX(-50%);
+      border-radius: 20px; background: #121018;
+    }
+    .float {
+      position: absolute; border-radius: 22px; overflow: hidden; background: #fff;
+      box-shadow: 0 40px 80px -30px rgba(40, 15, 120, 0.5), 0 0 0 1px rgba(90, 43, 230, 0.1);
+    }
+    .float img { display: block; width: 100%; }
+    .pill { border-radius: 999px; }
+  </style>
+</head>
+<body>
+  <!-- 16:9 — desktop + phone -->
+  <section id="showcase" class="frame bg" style="width:1600px;height:900px">
+    <div class="browser" style="left:110px;top:96px;width:1150px">
+      <div class="bar"><i></i><i></i><i></i><span>cogni.app</span></div>
+      <img src="raw/desktop.png" alt="" />
+    </div>
+    <div class="phone" style="left:1160px;top:150px;width:330px">
+      <div class="screen"><img src="raw/mobile.png" alt="" /></div>
+    </div>
+  </section>
+
+  <!-- 4:5 — mobile hero with the question pill floating beside it -->
+  <section id="detail-1" class="frame deep" style="width:1080px;height:1350px">
+    <div class="phone" style="left:295px;top:80px;width:490px">
+      <div class="screen"><img src="raw/mobile.png" alt="" /></div>
+    </div>
+    <div class="float pill" style="left:50px;top:1150px;width:460px;transform:rotate(-4deg)">
+      <img src="raw/ask.png" alt="" />
+    </div>
+  </section>
+
+  <!-- 4:5 — workspace close-up: summary, chat and a flashcard -->
+  <section id="detail-2" class="frame bg" style="width:1080px;height:1350px">
+    <div class="float" style="left:60px;top:80px;width:960px">
+      <img src="raw/summary.png" alt="" />
+    </div>
+    <div class="float" style="left:60px;top:690px;width:960px;background:none;box-shadow:0 40px 80px -30px rgba(40,15,120,.55)">
+      <img src="raw/deck.png" alt="" />
+    </div>
+    <div class="float" style="left:330px;top:1000px;width:690px">
+      <img src="raw/chat.png" alt="" />
+    </div>
+  </section>
+</body>
+</html>

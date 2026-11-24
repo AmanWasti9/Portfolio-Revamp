@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Pacer — Power that you run</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,800;1,900&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --red: #e3141b;
+      --red-600: #c10f15;
+      --bg: #0c0c0c;
+      --panel: #161616;
+      --panel-2: #1d1d1d;
+      --line: #2a2a2a;
+      --text: #f4f4f2;
+      --muted: #9a9a96;
+      --concrete: #bdb8b1;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: "Archivo", "Segoe UI", system-ui, sans-serif; background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; color: inherit; border: 0; background: none; cursor: pointer; }
+    svg { display: block; }
+    .wrap { width: min(1260px, 100% - 56px); margin: 0 auto; }
+    .noise::after {
+      content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0.35; mix-blend-mode: overlay;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    /* sneaker colourways (the SVG reads these variables) */
+    .shoe { width: 100%; height: auto; aspect-ratio: 2 / 1; overflow: visible; }
+    .cw-volt   { --upper: #f5f5f2; --overlay: #d9d9d4; --accent: #e3141b; --mid: #ffffff; --sole: #1b1b1b; --lace: #e9e9e4; --inside: #2a2a2a; }
+    .cw-night  { --upper: #1f1f1f; --overlay: #121212; --accent: #e3141b; --mid: #f1f1ee; --sole: #0d0d0d; --lace: #2e2e2e; --inside: #3a3a3a; }
+    .cw-stone  { --upper: #c9c3b9; --overlay: #a9a297; --accent: #1b1b1b; --mid: #f4f1ea; --sole: #3a3530; --lace: #e8e3da; --inside: #5a544c; }
+    .cw-blaze  { --upper: #e3141b; --overlay: #b30f15; --accent: #ffffff; --mid: #f6f6f3; --sole: #1b1b1b; --lace: #ffffff; --inside: #6e0a0d; }
+    .cw-trail  { --upper: #3c4a3e; --overlay: #2c372e; --accent: #f0a32a; --mid: #e9e5da; --sole: #2a2622; --lace: #d8d3c7; --inside: #1e251f; }
+
+    /* ── nav ─────────────────────────────────── */
+    .nav { position: relative; z-index: 5; display: flex; align-items: center; justify-content: space-between; padding: 26px 0; }
+    .logo { display: flex; align-items: center; gap: 10px; font-weight: 900; font-style: italic; font-size: 22px; letter-spacing: -0.02em; text-transform: uppercase; }
+    .logo b { display: grid; place-items: center; width: 34px; height: 34px; background: #fff; color: var(--bg); font-style: normal; font-weight: 900; font-size: 20px; }
+    .logo span { color: var(--red); }
+    .links { display: flex; gap: 34px; font-size: 14px; font-weight: 600; }
+    .links a { opacity: 0.75; }
+    .links a.on { opacity: 1; }
+    .cart { position: relative; width: 42px; height: 42px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 50%; }
+    .cart i { position: absolute; top: -3px; right: -3px; width: 18px; height: 18px; border-radius: 50%; background: var(--red); font-style: normal; font-size: 11px; font-weight: 800; display: grid; place-items: center; }
+
+    /* ── hero ────────────────────────────────── */
+    .hero { position: relative; overflow: hidden; min-height: 820px; background: #0b0b0b; }
+    .plane { position: absolute; transform-origin: left center; background: linear-gradient(180deg, #4a4845, #2b2927 60%, #1c1b1a); }
+    .plane.p1 { left: 34%; top: 47%; width: 110%; height: 210px; transform: rotate(-17deg); }
+    .plane.p2 { left: 40%; top: 74%; width: 110%; height: 230px; transform: rotate(-17deg); background: linear-gradient(180deg, #5b5854, #36332f 55%, #201e1c); }
+    .plane.p3 { left: 48%; top: 22%; width: 100%; height: 150px; transform: rotate(-17deg); background: linear-gradient(180deg, #34322f, #1f1e1c); }
+    .beam { position: absolute; inset: 0; background: linear-gradient(115deg, transparent 38%, rgba(255, 255, 255, 0.09) 52%, transparent 66%); }
+    .hero-grid { position: relative; z-index: 2; display: grid; grid-template-columns: 1fr 1.05fr; align-items: center; gap: 30px; padding: 40px 0 70px; }
+    .tag { display: inline-flex; align-items: center; gap: 10px; padding: 9px 16px; border: 1px solid #3a3a3a; border-radius: 999px; font-size: 12px; font-weight: 700; letter-spacing: 0.28em; }
+    .tag i { width: 8px; height: 8px; border-radius: 50%; background: var(--red); }
+    h1 { margin: 26px 0 18px; font-style: italic; font-weight: 900; text-transform: uppercase; font-size: clamp(54px, 7.4vw, 108px); line-height: 0.92; letter-spacing: -0.03em; }
+    h1 .out { color: transparent; -webkit-text-stroke: 2px #fff; }
+    .sub { margin: 0; font-size: 17px; letter-spacing: 0.08em; color: #d6d6d2; }
+    .btn { display: inline-flex; align-items: center; gap: 12px; padding: 17px 28px; background: var(--red); color: #fff; font-weight: 800; font-size: 15px; letter-spacing: 0.02em; white-space: nowrap; }
+    .btn:hover { background: var(--red-600); }
+    .btn-line { background: transparent; border: 1px solid #555; }
+    .ctas { display: flex; gap: 12px; margin-top: 34px; }
+    .stats { display: flex; gap: 0; margin-top: 56px; }
+    .stats div { padding: 0 30px; border-left: 1px solid #3a3a3a; }
+    .stats div:first-child { padding-left: 0; border-left: 0; }
+    .stats strong { display: block; font-size: 30px; font-weight: 800; }
+    .stats span { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; color: var(--muted); text-transform: uppercase; }
+    .hero-shoe { position: relative; height: 560px; }
+    .glow { position: absolute; left: 50%; top: 46%; width: 560px; height: 560px; transform: translate(-50%, -50%); border-radius: 50%; background: radial-gradient(circle, rgba(227, 20, 27, 0.55), rgba(227, 20, 27, 0.12) 45%, transparent 70%); filter: blur(10px); }
+    .ring { position: absolute; left: 50%; top: 46%; width: 470px; height: 470px; transform: translate(-50%, -50%); border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.14); }
+    .hero-shoe .shoe { position: absolute; left: -2%; top: 18%; width: 108%; transform: rotate(-14deg); filter: drop-shadow(0 40px 40px rgba(0, 0, 0, 0.6)); }
+    .ground { position: absolute; left: 18%; bottom: 60px; width: 64%; height: 40px; border-radius: 50%; background: radial-gradient(ellipse, rgba(0, 0, 0, 0.8), transparent 70%); }
+    .drop {
+      position: absolute; right: 2%; bottom: 70px; padding: 14px 18px; display: flex; gap: 14px; align-items: center;
+      background: rgba(20, 20, 20, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+    .drop small { display: block; font-size: 11px; letter-spacing: 0.18em; color: var(--red); font-weight: 800; }
+    .drop strong { font-size: 16px; }
+    .drop em { font-style: normal; font-size: 22px; font-weight: 800; margin-left: 8px; }
+
+    /* ── products ────────────────────────────── */
+    section.block { padding: 110px 0; }
+    .head { display: flex; align-items: end; justify-content: space-between; margin-bottom: 40px; }
+    .kicker { font-size: 12px; font-weight: 800; letter-spacing: 0.28em; color: var(--red); }
+    h2 { margin: 10px 0 0; font-style: italic; font-weight: 900; text-transform: uppercase; font-size: 54px; line-height: 0.95; letter-spacing: -0.02em; }
+    .more { font-weight: 700; font-size: 14px; border-bottom: 2px solid var(--red); padding-bottom: 4px; }
+    .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+    .card { background: var(--panel); border: 1px solid var(--line); }
+    .card .pic { position: relative; height: 230px; display: grid; place-items: center; background: radial-gradient(circle at 50% 60%, #2b2b2b, #161616 70%); overflow: hidden; }
+    .card .pic .shoe { width: 86%; transform: rotate(-12deg); filter: drop-shadow(0 18px 16px rgba(0, 0, 0, 0.6)); }
+    .badge { position: absolute; left: 14px; top: 14px; padding: 5px 9px; background: var(--red); font-size: 10.5px; font-weight: 800; letter-spacing: 0.14em; }
+    .card .info { padding: 18px 18px 20px; display: grid; grid-template-columns: 1fr auto; gap: 4px 10px; align-items: center; }
+    .card h3 { margin: 0; font-size: 17px; font-weight: 800; text-transform: uppercase; }
+    .card .cat { grid-column: 1; font-size: 13px; color: var(--muted); }
+    .card .price { grid-row: 1; grid-column: 2; font-size: 18px; font-weight: 800; color: var(--red); }
+    .card .row { grid-column: 1 / -1; margin-top: 12px; display: flex; align-items: center; justify-content: space-between; }
+    .stars { display: flex; gap: 3px; color: var(--red); font-size: 13px; }
+    .stars span { color: var(--muted); margin-left: 6px; font-weight: 600; }
+    .add { width: 38px; height: 38px; display: grid; place-items: center; background: var(--red); font-size: 20px; font-weight: 700; }
+
+    /* ── product page ─────────────────────────── */
+    .pdp { background: #101010; }
+    .pdp-grid { display: grid; grid-template-columns: 1.15fr 1fr; gap: 50px; align-items: start; }
+    .stagebox { position: relative; height: 520px; display: grid; place-items: center; background: linear-gradient(160deg, #2a2826, #151413 70%); overflow: hidden; }
+    .stagebox .shoe { width: 88%; transform: rotate(-10deg); filter: drop-shadow(0 30px 30px rgba(0, 0, 0, 0.65)); }
+    .thumbs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 12px; }
+    .thumbs div { height: 92px; display: grid; place-items: center; background: var(--panel); border: 1px solid var(--line); }
+    .thumbs div.on { border-color: var(--red); }
+    .thumbs .shoe { width: 78%; }
+    .pdp h2 { font-size: 60px; }
+    .meta { display: flex; align-items: center; gap: 16px; margin: 14px 0 22px; }
+    .meta .price { font-size: 34px; font-weight: 800; }
+    .meta .was { color: var(--muted); text-decoration: line-through; font-size: 18px; }
+    .desc { margin: 0 0 28px; color: #c9c9c5; line-height: 1.65; max-width: 46ch; }
+    .label { font-size: 12px; font-weight: 800; letter-spacing: 0.2em; color: var(--muted); margin-bottom: 12px; display: flex; justify-content: space-between; }
+    .label a { letter-spacing: 0; text-decoration: underline; font-weight: 600; }
+    .colors { display: flex; gap: 12px; margin-bottom: 28px; }
+    .colors i { width: 40px; height: 40px; border-radius: 50%; border: 2px solid transparent; box-shadow: inset 0 0 0 3px var(--bg); }
+    .colors i.on { border-color: #fff; }
+    .sizes { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 28px; }
+    .sizes span { padding: 13px 0; text-align: center; border: 1px solid var(--line); font-weight: 700; font-size: 14px; }
+    .sizes span.on { background: var(--red); border-color: var(--red); }
+    .sizes span.off { color: #4a4a4a; text-decoration: line-through; }
+    .buy { display: grid; grid-template-columns: 1fr auto; gap: 10px; }
+    .buy .btn { justify-content: center; font-size: 16px; padding: 19px; }
+    .heart { width: 60px; display: grid; place-items: center; border: 1px solid var(--line); }
+    .ship { margin-top: 18px; display: flex; gap: 22px; color: var(--muted); font-size: 13px; }
+    .ship b { color: var(--text); }
+
+    /* ── why ─────────────────────────────────── */
+    .why .grid { grid-template-columns: repeat(3, 1fr); }
+    .feature { padding: 30px; background: var(--panel); border: 1px solid var(--line); }
+    .feature .ico { width: 52px; height: 52px; display: grid; place-items: center; background: var(--red); }
+    .feature h3 { margin: 22px 0 8px; font-size: 20px; font-weight: 800; text-transform: uppercase; }
+    .feature p { margin: 0; color: var(--muted); line-height: 1.6; }
+
+    footer { padding: 40px 0 50px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; color: var(--muted); font-size: 14px; }
+
+    /* ── responsive ──────────────────────────── */
+    @media (max-width: 900px) {
+      .wrap { width: calc(100% - 36px); }
+      .links { display: none; }
+      .hero { min-height: 0; }
+      .hero-grid { grid-template-columns: 1fr; padding: 20px 0 40px; gap: 0; }
+      h1 { font-size: 58px; }
+      h1 .out { -webkit-text-stroke: 1.5px #fff; }
+      .sub { font-size: 14px; }
+      .ctas { margin-top: 26px; }
+      .btn { padding: 15px 20px; font-size: 14px; }
+      .stats { margin-top: 34px; }
+      .stats div { padding: 0 16px; }
+      .stats strong { font-size: 22px; }
+      .stats span { font-size: 9.5px; }
+      .hero-shoe { height: 330px; order: -1; margin: 10px -10px 0; }
+      .glow { width: 340px; height: 340px; }
+      .ring { width: 290px; height: 290px; }
+      .drop { right: 0; bottom: 18px; padding: 10px 12px; }
+      .drop em { font-size: 18px; }
+      .plane.p1 { left: -10%; top: 20%; }
+      .plane.p2 { left: -10%; top: 40%; }
+      .plane.p3 { display: none; }
+      section.block { padding: 64px 0; }
+      h2, .pdp h2 { font-size: 40px; }
+      .grid, .why .grid, .pdp-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+      .pdp-grid, .why .grid { grid-template-columns: 1fr; }
+      .card .pic { height: 150px; }
+      .card .info { padding: 12px; }
+      .card h3 { font-size: 13px; }
+      .card .price { font-size: 14px; }
+      .stagebox { height: 300px; }
+      .thumbs div { height: 64px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- An original sneaker drawing. Colours come from the .cw-* classes. -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="shoe" viewBox="0 0 420 210">
+      <!-- outsole with toe spring -->
+      <path style="fill:var(--sole)" d="M16 150c0 16 12 26 36 26h270c40 0 70-10 86-32l-4-6H18z" />
+      <path style="fill:rgba(255,255,255,.1)" d="M56 166h12v5H56zm28 0h12v5H84zm28 0h12v5h-12zm28 0h12v5h-12zm28 0h12v5h-12zm28 0h12v5h-12zm28 0h12v5h-12zm28 0h12v5h-12zm28 0h12v5h-12zm28 0h10v5h-10z" />
+      <!-- midsole -->
+      <path style="fill:var(--mid)" d="M14 144c-2-14 8-24 26-26l278-2c38 0 70 8 88 26-14 9-38 14-66 14H36c-12 0-20-4-22-12z" />
+      <path style="fill:none;stroke:var(--accent);stroke-width:4;stroke-linecap:round" d="M30 138l290-2c32 0 58 4 80 12" />
+      <!-- upper -->
+      <path style="fill:var(--upper)" d="M34 120c-8-22-6-52 6-66 6-6 16-8 26-4 18 8 42 12 66 10 18-2 32-10 44-22 8-8 20-10 30-4 12 10 22 20 38 30 32 18 68 26 96 30 34 5 58 18 64 38v6c-22-14-54-20-86-20z" />
+      <!-- heel counter + toe cap -->
+      <path style="fill:var(--overlay)" d="M34 120c-8-22-6-52 6-66 6-6 16-8 26-4-6 18-4 44 8 70zM340 94c34 5 58 18 64 38v6c-12-8-30-14-52-18-12-8-18-18-12-26z" />
+      <!-- collar opening + tongue -->
+      <path style="fill:var(--inside)" d="M66 50c18 6 42 10 66 8 18-2 30-8 40-16-22 4-52 6-76 4-14-1-24 1-30 4z" />
+      <path style="fill:var(--overlay)" d="M176 38c8-14 24-20 38-14 6 4 8 12 6 20-6-4-14-8-24-8z" />
+      <!-- pull tab -->
+      <path style="fill:var(--accent)" d="M36 60c-6-8-6-16 0-20l8 4c-4 6-4 10-2 14z" />
+      <!-- brand stripes -->
+      <path style="fill:var(--accent)" d="M138 116l56-52h20l-56 52zM170 116l56-52h20l-56 52z" />
+      <!-- laces -->
+      <g style="fill:var(--lace)">
+        <rect x="200" y="42" width="24" height="7" rx="3.5" transform="rotate(26 212 45)" />
+        <rect x="224" y="54" width="24" height="7" rx="3.5" transform="rotate(26 236 57)" />
+        <rect x="248" y="65" width="24" height="7" rx="3.5" transform="rotate(26 260 68)" />
+        <rect x="272" y="75" width="24" height="7" rx="3.5" transform="rotate(26 284 78)" />
+      </g>
+      <!-- stitch line -->
+      <path style="fill:none;stroke:rgba(0,0,0,.16);stroke-width:2;stroke-dasharray:6 5" d="M74 104c70 6 160 4 262-6" />
+    </symbol>
+  </svg>
+
+  <div class="hero noise" id="top">
+    <div class="plane p3"></div>
+    <div class="plane p1"></div>
+    <div class="plane p2"></div>
+    <div class="beam"></div>
+    <div class="wrap">
+      <header class="nav">
+        <a class="logo" href="#top"><b>P</b>The <span>Pacer</span></a>
+        <nav class="links">
+          <a class="on" href="#top">Home</a>
+          <a href="#products">Products</a>
+          <a href="#why">Why us</a>
+          <a href="#product">New drop</a>
+          <a href="#contact">Contact</a>
+        </nav>
+        <a class="cart" href="#product" aria-label="Cart, 2 items">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h12l-1 13H7z" /><path d="M9 7a3 3 0 0 1 6 0" /></svg><i>2</i>
+        </a>
+      </header>
+
+      <div class="hero-grid">
+        <div>
+          <span class="tag"><i></i>STEP INTO PERFORMANCE</span>
+          <h1><span class="out">Power</span> that<br />you run</h1>
+          <p class="sub">Engineered for movement. Designed for more.</p>
+          <div class="ctas">
+            <a class="btn" href="#products">Explore Collection
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+            </a>
+            <a class="btn btn-line" href="#product">New Drop</a>
+          </div>
+          <div class="stats">
+            <div><strong>+150</strong><span>Comfort sneakers</span></div>
+            <div><strong>+1000</strong><span>Customers</span></div>
+            <div><strong>+250</strong><span>Designs</span></div>
+          </div>
+        </div>
+        <div class="hero-shoe" aria-hidden="true">
+          <div class="glow"></div>
+          <div class="ring"></div>
+          <div class="ground"></div>
+          <svg class="shoe cw-volt"><use href="#shoe" /></svg>
+          <div class="drop"><div><small>NEW DROP</small><strong>Pacer Volt 2</strong></div><em>$149</em></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="block" id="products">
+    <div class="wrap">
+      <div class="head">
+        <div><div class="kicker">BEST SELLERS</div><h2>Built to move</h2></div>
+        <a class="more" href="#products">View all products</a>
+      </div>
+      <div class="grid">
+        <article class="card">
+          <div class="pic"><span class="badge">NEW</span><svg class="shoe cw-volt"><use href="#shoe" /></svg></div>
+          <div class="info"><h3>Pacer Volt 2</h3><span class="price">$149</span><span class="cat">Road running</span>
+            <div class="row"><div class="stars">★★★★★<span>4.9</span></div><span class="add">+</span></div></div>
+        </article>
+        <article class="card">
+          <div class="pic"><svg class="shoe cw-night"><use href="#shoe" /></svg></div>
+          <div class="info"><h3>Night Runner</h3><span class="price">$135</span><span class="cat">Daily trainer</span>
+            <div class="row"><div class="stars">★★★★★<span>4.8</span></div><span class="add">+</span></div></div>
+        </article>
+        <article class="card">
+          <div class="pic"><span class="badge">-20%</span><svg class="shoe cw-blaze"><use href="#shoe" /></svg></div>
+          <div class="info"><h3>Blaze Tempo</h3><span class="price">$119</span><span class="cat">Speed &amp; tempo</span>
+            <div class="row"><div class="stars">★★★★☆<span>4.6</span></div><span class="add">+</span></div></div>
+        </article>
+        <article class="card">
+          <div class="pic"><svg class="shoe cw-trail"><use href="#shoe" /></svg></div>
+          <div class="info"><h3>Apex Trail</h3><span class="price">$159</span><span class="cat">Trail running</span>
+            <div class="row"><div class="stars">★★★★★<span>4.9</span></div><span class="add">+</span></div></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="block pdp" id="product">
+    <div class="wrap pdp-grid">
+      <div>
+        <div class="stagebox noise"><svg class="shoe cw-volt"><use href="#shoe" /></svg></div>
+        <div class="thumbs">
+          <div class="on"><svg class="shoe cw-volt"><use href="#shoe" /></svg></div>
+          <div><svg class="shoe cw-night"><use href="#shoe" /></svg></div>
+          <div><svg class="shoe cw-stone"><use href="#shoe" /></svg></div>
+          <div><svg class="shoe cw-blaze"><use href="#shoe" /></svg></div>
+        </div>
+      </div>
+      <div class="buybox">
+        <div class="kicker">NEW RELEASE · ROAD RUNNING</div>
+        <h2>Pacer Volt 2</h2>
+        <div class="meta"><span class="price">$149</span><span class="was">$179</span><div class="stars">★★★★★<span>4.9 · 312 reviews</span></div></div>
+        <p class="desc">A lighter, springier ride for every distance. Responsive foam returns energy with each step, while the breathable knit upper keeps you cool past mile ten.</p>
+        <div class="label">COLOUR — CLOUD WHITE</div>
+        <div class="colors"><i class="on" style="background:#f2f2ee"></i><i style="background:#1f1f1f"></i><i style="background:#c9c3b9"></i><i style="background:#e3141b"></i></div>
+        <div class="label">SELECT SIZE (US)<a href="#product">Size guide</a></div>
+        <div class="sizes"><span>7</span><span>7.5</span><span>8</span><span class="off">8.5</span><span>9</span><span class="on">9.5</span><span>10</span><span>10.5</span><span class="off">11</span><span>12</span></div>
+        <div class="buy">
+          <a class="btn" href="#product">Add to cart — $149</a>
+          <span class="heart"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20s-7-4.4-9.2-9A5 5 0 0 1 12 6a5 5 0 0 1 9.2 5c-2.2 4.6-9.2 9-9.2 9z" /></svg></span>
+        </div>
+        <div class="ship"><span><b>Free delivery</b> over $100</span><span><b>30-day</b> free returns</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block why" id="why">
+    <div class="wrap">
+      <div class="head"><div><div class="kicker">WHY THE PACER</div><h2>Every step, engineered</h2></div></div>
+      <div class="grid">
+        <div class="feature"><span class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M3 17c4 0 5-3 9-3s5 3 9 3M3 12c4 0 5-3 9-3s5 3 9 3" /></svg></span><h3>Responsive cushioning</h3><p>Energy-return foam that softens every landing and pushes you into the next stride.</p></div>
+        <div class="feature"><span class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M4 18h16M6 14l3-6 3 6 3-6 3 6" /></svg></span><h3>All-terrain grip</h3><p>A multi-directional outsole that holds on wet roads, gravel and track.</p></div>
+        <div class="feature"><span class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M4 8h10a3 3 0 1 0-3-3M4 12h14a3 3 0 1 1-3 3M4 16h7" /></svg></span><h3>Breathable knit</h3><p>A light, airy upper that moves with your foot and keeps it cool on long runs.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap" id="contact">
+    <footer><a class="logo" href="#top"><b>P</b>The <span>Pacer</span></a><span>© 2026 The Pacer. Run your own race.</span></footer>
+  </div>
+</body>
+</html>

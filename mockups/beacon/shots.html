@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Beacon — case study frames</title>
+  <!-- Presentation frames for the portfolio case study.
+       raw/*.png are captured from index.html by scripts/render-mockups.mjs -->
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #444; display: grid; gap: 40px; padding: 40px; justify-content: center; }
+    .frame { position: relative; overflow: hidden; }
+    .paper { background: radial-gradient(700px 500px at 85% 15%, rgba(227, 38, 44, 0.16), transparent 65%), #efefec; }
+    .paper::before {
+      content: ""; position: absolute; inset: 0;
+      background-image: linear-gradient(rgba(0, 0, 0, 0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 0, 0, 0.045) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse at center, #000 30%, transparent 80%);
+    }
+    .red { background: radial-gradient(700px 600px at 30% 20%, #ff4d52, transparent 65%), linear-gradient(160deg, #e3262c, #9e1418); }
+    .ink { background: radial-gradient(600px 500px at 80% 85%, rgba(227, 38, 44, 0.35), transparent 65%), #121212; }
+    .big {
+      position: absolute; font: 800 330px/0.8 "Inter Tight", "Segoe UI", sans-serif; letter-spacing: -0.06em;
+      color: rgba(255, 255, 255, 0.08); white-space: nowrap;
+    }
+    img { display: block; width: 100%; }
+    .browser {
+      position: absolute; border-radius: 16px; overflow: hidden; background: #fff;
+      box-shadow: 0 50px 100px -40px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(0, 0, 0, 0.08);
+    }
+    .browser .bar { height: 40px; display: flex; align-items: center; gap: 8px; padding: 0 16px; background: #f5f5f3; border-bottom: 1px solid #e7e7e4; }
+    .browser .bar i { width: 11px; height: 11px; border-radius: 50%; background: #dcdcd8; }
+    .browser .bar span { margin-left: 18px; padding: 5px 60px; border-radius: 8px; background: #fff; border: 1px solid #e7e7e4; font: 500 12px "Segoe UI", system-ui, sans-serif; color: #6b6b6b; }
+    .phone {
+      position: absolute; z-index: 2; padding: 12px; border-radius: 54px; background: #111;
+      box-shadow: 0 60px 120px -40px rgba(0, 0, 0, 0.7), inset 0 0 0 2px #2a2a2a;
+    }
+    .phone .screen { overflow: hidden; border-radius: 42px; padding-top: 13%; background: #fff; }
+    .phone::after { content: ""; position: absolute; top: 24px; left: 50%; width: 30%; height: 26px; transform: translateX(-50%); border-radius: 20px; background: #111; }
+    .card { position: absolute; z-index: 3; border-radius: 20px; overflow: hidden; background: #fff; padding: 22px; box-shadow: 0 40px 80px -30px rgba(0, 0, 0, 0.55); }
+    .shot { position: absolute; z-index: 2; border-radius: 20px; overflow: hidden; box-shadow: 0 40px 90px -30px rgba(0, 0, 0, 0.6); }
+    .pill { position: absolute; z-index: 3; border-radius: 16px; overflow: hidden; box-shadow: 0 24px 50px -16px rgba(0, 0, 0, 0.45); }
+  </style>
+</head>
+<body>
+  <!-- 16:9 — desktop + phone -->
+  <section id="showcase" class="frame paper" style="width:1600px;height:900px">
+    <div class="browser" style="left:110px;top:80px;width:1150px">
+      <div class="bar"><i></i><i></i><i></i><span>beacon.blog</span></div>
+      <img src="raw/desktop.png" alt="" />
+    </div>
+    <div class="phone" style="left:1160px;top:150px;width:330px">
+      <div class="screen"><img src="raw/mobile.png" alt="" /></div>
+    </div>
+  </section>
+
+  <!-- 4:5 — mobile home on Beacon red with a post card and the featured note -->
+  <section id="detail-1" class="frame red" style="width:1080px;height:1350px">
+    <div class="big" style="left:-30px;bottom:30px">Read.</div>
+    <div class="phone" style="left:360px;top:80px;width:500px">
+      <div class="screen"><img src="raw/mobile.png" alt="" /></div>
+    </div>
+    <div class="card" style="left:50px;top:720px;width:420px;transform:rotate(-4deg)">
+      <img src="raw/post1.png" alt="" />
+    </div>
+    <div class="pill" style="left:650px;top:1180px;width:360px">
+      <img src="raw/note.png" alt="" />
+    </div>
+  </section>
+
+  <!-- 4:5 — writing and reading: editor over the article view -->
+  <section id="detail-2" class="frame ink" style="width:1080px;height:1350px">
+    <div class="shot" style="left:60px;top:50px;width:720px">
+      <img src="raw/article.png" alt="" />
+    </div>
+    <div class="shot" style="left:300px;top:520px;width:720px">
+      <img src="raw/editor.png" alt="" />
+    </div>
+  </section>
+</body>
+</html>
