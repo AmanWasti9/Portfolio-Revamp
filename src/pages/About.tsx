@@ -1,9 +1,10 @@
 import { useRef } from "react";
 import { gsap, ScrollTrigger, useGSAP, reducedMotion } from "../lib/motion";
-import { about, cover, imgSrc, imgSrcSet, journey, projects, site } from "../content";
+import { about, cover, imgSrc, imgSrcSet, journey, packages, projects, site } from "../content";
 import { TLink, useRevealed } from "../components/Transition";
 import { Roll, SplitReveal } from "../components/Motion";
 import { Journey } from "../components/Journey";
+import { OpenSourceList, npmUrl } from "../components/OpenSource";
 
 export default function About() {
   const root = useRef<HTMLElement>(null);
@@ -110,6 +111,16 @@ export default function About() {
             </dd>
           </div>
           <div className="facts__row">
+            <dt>Open source</dt>
+            <dd className="facts__links">
+              {packages.map((p) => (
+                <a key={p.name} href={npmUrl(p.name)} target="_blank" rel="noreferrer">
+                  <Roll text={p.name} />
+                </a>
+              ))}
+            </dd>
+          </div>
+          <div className="facts__row">
             <dt>Elsewhere</dt>
             <dd className="facts__links">
               {site.socials.map((s) => (
@@ -158,6 +169,8 @@ export default function About() {
       </section>
 
       <Journey />
+
+      <OpenSourceList />
 
       <section className="principles">
         <h2 className="case__label">How I work</h2>

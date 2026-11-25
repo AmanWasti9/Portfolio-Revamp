@@ -1075,6 +1075,327 @@ ol {
 }
 
 /* ─────────────────────────────────────────────────────────────
+   Open source
+   ───────────────────────────────────────────────────────────── */
+.oss {
+  padding: var(--section) var(--pad) 0;
+}
+.oss__head {
+  flex-wrap: wrap;
+}
+.oss__intro {
+  flex-basis: 100%;
+  max-width: 52ch;
+  margin-top: 1rem;
+  color: var(--ink-2);
+}
+.oss__list {
+  border-bottom: 1px solid var(--line);
+}
+.oss__pkg {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: clamp(2rem, 6vw, 6rem);
+  padding: clamp(2.2rem, 4vw, 3.6rem) 0;
+}
+.oss__rule {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--ink);
+  opacity: 0.22;
+  transform-origin: left;
+}
+.oss__main {
+  display: grid;
+  gap: 1.1rem;
+  align-content: start;
+  justify-items: start;
+}
+.oss__idx {
+  font-size: 12px;
+  color: var(--accent);
+}
+.oss__name {
+  font-family: var(--serif);
+  font-size: clamp(2.4rem, 4.6vw, 4.6rem);
+  line-height: 0.95;
+  letter-spacing: -0.015em;
+}
+.oss__name a {
+  background: linear-gradient(var(--accent), var(--accent)) 0 100% / 0% 2px no-repeat;
+  transition:
+    background-size 0.6s var(--ease-io),
+    color 0.3s ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .oss__name a:hover {
+    color: var(--accent);
+    background-size: 100% 2px;
+  }
+}
+.oss__summary {
+  max-width: 46ch;
+  color: var(--ink-2);
+}
+.oss__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.oss__tags li {
+  font-size: 11px;
+  padding: 0.35em 0.85em;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+}
+.oss__cmd {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.4rem;
+  padding: 0.35rem 0.35rem 0.35rem 1rem;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 13px;
+}
+.oss__cmd code {
+  font-family: var(--mono);
+  white-space: nowrap;
+}
+.oss__cmd code span {
+  color: var(--accent-soft);
+}
+.oss__cmd button {
+  margin-left: 0.8rem;
+  padding: 0.45em 1em;
+  border-radius: 999px;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 12px;
+  min-width: 5.4em;
+  transition:
+    background-color 0.2s ease,
+    transform 0.16s var(--ease-out);
+}
+.oss__cmd button:active {
+  transform: scale(0.96);
+}
+@media (hover: hover) and (pointer: fine) {
+  .oss__cmd button:hover {
+    background: var(--accent-pale);
+  }
+}
+.oss__stats {
+  display: grid;
+  gap: 1.2rem;
+  align-content: start;
+}
+.oss__big {
+  display: grid;
+  gap: 0.2rem;
+}
+.oss__count {
+  font-family: var(--serif);
+  font-size: clamp(4rem, 8vw, 7.5rem);
+  line-height: 0.85;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+}
+.oss__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  font-size: 12px;
+  color: var(--ink-2);
+}
+.oss__live {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: pulse 2.4s ease-in-out infinite;
+}
+.oss__spark {
+  position: relative;
+  height: 70px;
+}
+.oss__spark svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.oss__area {
+  fill: var(--accent-pale);
+  opacity: 0.45;
+}
+.oss__line {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+}
+.oss__peak {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  margin: -4.5px 0 0 -4.5px;
+  border-radius: 50%;
+  background: var(--paper);
+  border: 2px solid var(--accent);
+}
+.oss__facts {
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+}
+.oss__facts dt {
+  font-size: 11px;
+  color: var(--ink-2);
+}
+.oss__facts dd {
+  margin: 0.25rem 0 0;
+  font-size: 13px;
+}
+.oss__npm {
+  justify-self: start;
+}
+@media (max-width: 899px) {
+  .oss__pkg {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .oss__facts {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 420px) {
+  .oss__cmd {
+    font-size: 12px;
+  }
+  .oss__cmd button {
+    margin-left: auto;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .oss__live {
+    animation: none;
+  }
+}
+
+/* compact list (About page) */
+.oss-mini {
+  padding: var(--section) var(--pad) 0;
+}
+.oss-mini__intro {
+  margin: 1rem 0 2rem;
+  color: var(--ink-2);
+}
+.oss-mini ul {
+  border-bottom: 1px solid var(--line);
+}
+.oss-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.1fr 1.4fr auto 2rem;
+  gap: 2rem;
+  align-items: baseline;
+  padding: clamp(1.4rem, 2.6vw, 2.2rem) 0;
+}
+.oss-row__rule {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--ink);
+  opacity: 0.22;
+  transform-origin: left;
+}
+.oss-row__name {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 3.6vw, 3.4rem);
+  line-height: 1;
+  letter-spacing: -0.01em;
+  transition: color 0.3s ease;
+}
+/* the whole row is clickable through the name link */
+.oss-row__name::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+.oss-row__summary {
+  max-width: 48ch;
+  font-size: 13.5px;
+  color: var(--ink-2);
+}
+.oss-row__stats {
+  display: grid;
+  justify-items: end;
+  gap: 0.2rem;
+  text-align: right;
+}
+.oss-row__stats b {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(1.8rem, 2.8vw, 2.6rem);
+  line-height: 1;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+.oss-row__stats span {
+  font-size: 11.5px;
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+.oss-row__arrow {
+  font-size: 1.3rem;
+  transition: transform 0.4s var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .oss-row:hover .oss-row__name {
+    color: var(--accent);
+  }
+  .oss-row:hover .oss-row__arrow {
+    transform: translate(4px, -4px);
+  }
+}
+@media (max-width: 899px) {
+  .oss-row {
+    grid-template-columns: 1fr auto;
+    gap: 0.8rem 1rem;
+  }
+  .oss-row__summary {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+  .oss-row__stats {
+    grid-column: 1;
+    grid-row: 3;
+    justify-items: start;
+    text-align: left;
+  }
+  .oss-row__arrow {
+    grid-column: 2;
+    grid-row: 1;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
    Testimonials
    ───────────────────────────────────────────────────────────── */
 .tm {

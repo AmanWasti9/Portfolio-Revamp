@@ -210,6 +210,46 @@ export const projects: Project[] = [
   },
 ];
 
+// ─────────────────────────────────────────────────────────────
+//  Open-source npm packages.
+//  Download counts load live from api.npmjs.org on every visit.
+//  `fallback` is shown if npm can't be reached; refresh it now and then.
+//  Update `version` and `gzip` when you publish a new release
+//  (gzip size from https://bundlephobia.com/package/<name>).
+// ─────────────────────────────────────────────────────────────
+export type NpmPackage = {
+  name: string;
+  summary: string;
+  highlights: string[];
+  version: string;
+  gzip: string;
+  published: string; // YYYY-MM-DD, first release
+  fallback: { total: number; monthly: number[] };
+};
+
+export const packages: NpmPackage[] = [
+  {
+    name: "use-smart-loading",
+    summary:
+      "A React hook for smooth loading states. Fast requests don't flash a spinner, and an old request can never overwrite a newer one.",
+    highlights: ["No flicker", "Race-condition safe", "Unmount safe"],
+    version: "0.1.1",
+    gzip: "540 B",
+    published: "2026-01-04",
+    fallback: { total: 436, monthly: [199, 10, 4, 7, 16, 19, 128, 16, 17, 6, 14] },
+  },
+  {
+    name: "react-safe-timers",
+    summary:
+      "A React hook that clears every timer automatically when a component goes away, so apps don't leak memory or update screens that no longer exist.",
+    highlights: ["setTimeout", "setInterval", "requestAnimationFrame"],
+    version: "1.0.0",
+    gzip: "578 B",
+    published: "2026-01-08",
+    fallback: { total: 183, monthly: [88, 5, 2, 5, 15, 9, 13, 12, 15, 5, 14] },
+  },
+];
+
 // Starting prices: change the `price` text any time (e.g. "from $900", "$40 / hour").
 export const services = [
   {

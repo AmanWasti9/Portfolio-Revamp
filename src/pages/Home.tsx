@@ -5,6 +5,7 @@ import { TLink, useRevealed } from "../components/Transition";
 import { Roll, SplitReveal } from "../components/Motion";
 import { TileField } from "../components/TileField";
 import { Testimonials } from "../components/Testimonials";
+import { OpenSource } from "../components/OpenSource";
 
 export default function Home() {
   return (
@@ -12,6 +13,7 @@ export default function Home() {
       <Hero />
       <Statement />
       <WorksList />
+      <OpenSource />
       <Services />
       <Testimonials />
       <Process />
