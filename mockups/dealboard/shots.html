@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>DEALBOARD — case study frames</title>
+  <!-- Presentation frames for the portfolio case study.
+       raw/*.png are captured from index.html by scripts/render-mockups.mjs -->
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #444; display: grid; gap: 40px; padding: 40px; justify-content: center; }
+    .frame { position: relative; overflow: hidden; }
+    .warm { background: radial-gradient(800px 600px at 85% 10%, rgba(240, 72, 28, 0.16), transparent 65%), #f4f3f0; }
+    .warm::before {
+      content: ""; position: absolute; inset: 0;
+      background-image: radial-gradient(rgba(20, 18, 16, 0.08) 1.2px, transparent 1.2px);
+      background-size: 26px 26px;
+      mask-image: radial-gradient(ellipse at center, #000 30%, transparent 80%);
+    }
+    .ink { background: radial-gradient(700px 600px at 80% 15%, rgba(240, 72, 28, 0.35), transparent 65%), #141210; }
+    .ink::before {
+      content: ""; position: absolute; inset: 0;
+      background-image: radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+    .orange { background: radial-gradient(700px 600px at 25% 20%, #ff7a4d, transparent 65%), linear-gradient(160deg, #f0481c, #b8320d); }
+    img { display: block; width: 100%; }
+    .browser { position: absolute; border-radius: 14px; overflow: hidden; background: #fff; box-shadow: 0 50px 100px -40px rgba(20, 18, 16, 0.55), 0 0 0 1px rgba(20, 18, 16, 0.08); }
+    .browser .bar { height: 40px; display: flex; align-items: center; gap: 8px; padding: 0 16px; background: #f6f5f2; border-bottom: 1px solid #e9e6e0; }
+    .browser .bar i { width: 11px; height: 11px; border-radius: 50%; background: #dedad3; }
+    .browser .bar span { margin-left: 18px; padding: 5px 60px; border-radius: 8px; background: #fff; border: 1px solid #e9e6e0; font: 500 12px "Segoe UI", system-ui, sans-serif; color: #77726a; }
+    .phone { position: absolute; z-index: 2; padding: 12px; border-radius: 54px; background: #141210; box-shadow: 0 60px 120px -40px rgba(0, 0, 0, 0.7), inset 0 0 0 2px #2b2823; }
+    .phone .screen { overflow: hidden; border-radius: 42px; padding-top: 13%; background: #fff; }
+    .phone::after { content: ""; position: absolute; top: 24px; left: 50%; width: 30%; height: 26px; transform: translateX(-50%); border-radius: 20px; background: #141210; }
+    .shot { position: absolute; z-index: 2; border-radius: 14px; overflow: hidden; box-shadow: 0 40px 90px -30px rgba(0, 0, 0, 0.6); }
+  </style>
+</head>
+<body>
+  <!-- 16:9 — desktop + phone -->
+  <section id="showcase" class="frame warm" style="width:1600px;height:900px">
+    <div class="browser" style="left:110px;top:80px;width:1150px">
+      <div class="bar"><i></i><i></i><i></i><span>dealboard.app</span></div>
+      <img src="raw/desktop.png" alt="" />
+    </div>
+    <div class="phone" style="left:1160px;top:150px;width:330px">
+      <div class="screen"><img src="raw/mobile.png" alt="" /></div>
+    </div>
+  </section>
+
+  <!-- 4:5 — the pipeline board with the AI lead card -->
+  <section id="detail-1" class="frame ink" style="width:1080px;height:1350px">
+    <!-- the board runs off the right edge, zoomed in on the first columns -->
+    <div class="shot" style="left:60px;top:110px;width:2000px">
+      <img src="raw/board.png" alt="" />
+    </div>
+    <div class="shot" style="left:150px;top:850px;width:470px;border-radius:10px">
+      <img src="raw/undo.png" alt="" />
+    </div>
+    <div class="shot" style="left:400px;top:990px;width:620px;box-shadow:0 40px 80px -20px rgba(0,0,0,.8),0 0 0 1px rgba(255,255,255,.08)">
+      <img src="raw/ai.png" alt="" />
+    </div>
+  </section>
+
+  <!-- 4:5 — lead score panel and the forecast -->
+  <section id="detail-2" class="frame orange" style="width:1080px;height:1350px">
+    <div class="shot" style="left:60px;top:70px;width:520px">
+      <img src="raw/lead.png" alt="" />
+    </div>
+    <div class="shot" style="left:400px;top:720px;width:620px">
+      <img src="raw/forecast.png" alt="" />
+    </div>
+  </section>
+</body>
+</html>

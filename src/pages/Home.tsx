@@ -4,6 +4,7 @@ import { cover, imgSrc, process, projects, services, site } from "../content";
 import { TLink, useRevealed } from "../components/Transition";
 import { Roll, SplitReveal } from "../components/Motion";
 import { TileField } from "../components/TileField";
+import { Testimonials } from "../components/Testimonials";
 
 export default function Home() {
   return (
@@ -12,6 +13,7 @@ export default function Home() {
       <Statement />
       <WorksList />
       <Services />
+      <Testimonials />
       <Process />
     </main>
   );
@@ -31,7 +33,7 @@ function Hero() {
       const rm = reducedMotion();
       gsap.fromTo(
         ".hero__scribble path",
-        { strokeDashoffset: 1 },
+        { strokeDashoffset: 1000 },
         { strokeDashoffset: 0, duration: rm ? 0 : 1.1, ease: "power2.inOut", delay: 0.85 }
       );
       gsap.fromTo(
@@ -60,12 +62,18 @@ function Hero() {
     <section className="hero" ref={root}>
       <TileField />
 
+      {/* the nav hides this status on smaller screens, so the hero carries it there */}
+      <p className="hero__status hero__fade">
+        <i aria-hidden="true" />
+        Available for new projects
+      </p>
+
       <p className="hero__role">
         <SplitReveal as="span" type="words" mode="intro" delay={0.3}>
           {site.role}
         </SplitReveal>
         <svg className="hero__scribble" viewBox="0 0 300 16" preserveAspectRatio="none" aria-hidden="true">
-          <path pathLength={1} d="M3 10C48 4 96 13 150 8s104-5 147 2" />
+          <path pathLength={1000} d="M3 10C48 4 96 13 150 8s104-5 147 2" />
         </svg>
       </p>
 
@@ -286,33 +294,92 @@ function WorksList() {
 
 // ─────────────────────────────────────────────────────────────
 function Services() {
+  const root = useRef<HTMLElement>(null);
+  const revealed = useRevealed();
+
+  useGSAP(
+    () => {
+      if (!revealed) return;
+      const rm = reducedMotion();
+
+      // each price tag is stamped on after its service name rises in
+      gsap.utils.toArray<HTMLElement>(".svc__price").forEach((tag) => {
+        gsap.fromTo(
+          tag,
+          { autoAlpha: 0, scale: rm ? 1 : 0.6, rotation: rm ? -4 : -14 },
+          {
+            autoAlpha: 1,
+            scale: 1,
+            rotation: -4,
+            duration: rm ? 0.3 : 0.7,
+            ease: "back.out(2.2)",
+            delay: 0.35,
+            scrollTrigger: { trigger: tag.closest(".svc__item"), start: "top 85%", once: true },
+          }
+        );
+      });
+
+      // the two cut-outs settle in, then drift against the scroll
+      gsap.utils.toArray<HTMLElement>(".svc__deco").forEach((el, i) => {
+        gsap.fromTo(
+          el,
+          { autoAlpha: 0, y: rm ? 0 : 40, rotation: rm ? 0 : i ? 8 : -8 },
+          {
+            autoAlpha: 1,
+            y: 0,
+            rotation: 0,
+            duration: 1.2,
+            ease: "expo.out",
+            scrollTrigger: { trigger: el, start: "top 90%", once: true },
+          }
+        );
+        if (rm) return;
+        gsap.fromTo(
+          el.querySelector("img"),
+          { yPercent: i ? -10 : 12 },
+          {
+            yPercent: i ? 10 : -12,
+            ease: "none",
+            scrollTrigger: { trigger: root.current, start: "top bottom", end: "bottom top", scrub: true },
+          }
+        );
+      });
+    },
+    { dependencies: [revealed], scope: root }
+  );
+
   return (
-    <section className="services">
-      <header className="sec-head sec-head--center">
-        <SplitReveal as="h2" type="chars" random className="sec-head__title">
-          How I can help
-        </SplitReveal>
-      </header>
-      <ul className="services__list">
+    <section className="svc" ref={root}>
+      <span className="svc__deco svc__deco--mouse" aria-hidden="true">
+        <img src="/work/mouse-500.webp" srcSet="/work/mouse-500.webp 500w, /work/mouse-900.webp 900w" sizes="22vw" alt="" loading="lazy" />
+      </span>
+      <span className="svc__deco svc__deco--computer" aria-hidden="true">
+        <img src="/work/computer-500.webp" srcSet="/work/computer-500.webp 500w, /work/computer-900.webp 900w" sizes="24vw" alt="" loading="lazy" />
+      </span>
+
+      <SplitReveal as="h2" type="chars" random className="svc__heading">
+        How <em>I can</em> help
+      </SplitReveal>
+
+      <ul className="svc__list">
         {services.map((s) => (
-          <li key={s.title} className="services__item">
-            <span className="services__fill" aria-hidden="true" />
-            <SplitReveal as="h3" type="lines" className="services__title">
-              {s.title}
-            </SplitReveal>
-            <div className="services__body">
-              <SplitReveal as="p" type="lines">
-                {s.body}
+          <li key={s.title} className="svc__item">
+            <h3 className="svc__name">
+              <SplitReveal as="span" type="lines" className="svc__title">
+                {s.title}
               </SplitReveal>
-              <ul className="tags">
-                {s.tags.map((t) => (
-                  <li key={t}>{t}</li>
-                ))}
-              </ul>
-            </div>
+              <span className="svc__price">{s.price}</span>
+            </h3>
+            <SplitReveal as="p" type="lines" className="svc__body">
+              {s.body}
+            </SplitReveal>
           </li>
         ))}
       </ul>
+
+      <TLink to="/contact" className="link-line svc__cta" data-cursor="Let's talk">
+        <Roll text="Ask for a quote" /> <span aria-hidden="true">↳</span>
+      </TLink>
     </section>
   );
 }
@@ -393,6 +460,18 @@ function Process() {
       const dots = steps.map((s) => s.querySelector<HTMLElement>(".process__dot")!);
       const mm = gsap.matchMedia();
 
+      // reveal a step's text (once) when the line arrives at its dot
+      const shown = new Set<number>();
+      const showText = (i: number) => {
+        if (shown.has(i)) return;
+        shown.add(i);
+        gsap.fromTo(
+          steps[i].querySelectorAll(".process__text > *"),
+          { y: rm ? 0 : 18, autoAlpha: 0 },
+          { y: 0, autoAlpha: 1, duration: 0.8, ease: "expo.out", stagger: 0.06, overwrite: true }
+        );
+      };
+
       mm.add("(min-width: 1100px)", () => {
         gsap.fromTo(
           ".process__sketch",
@@ -405,24 +484,58 @@ function Process() {
             scrollTrigger: { trigger: map, start: "top 85%", once: true },
           }
         );
-        // each piece draws while its tip travels from one dot to the next
-        gsap.utils.toArray<SVGPathElement>(".process__seg").forEach((seg, i) => {
-          const from = i === 0 ? map : dots[i - 1];
-          const to = dots[i] ?? map;
-          gsap.fromTo(
+        gsap.set(".process__text > *", { autoAlpha: 0 });
+
+        // One scrubbed timeline for the whole path. Its time is measured in sketch
+        // units of height, so the line's tip stays level with the reading line as you
+        // scroll. Each piece eases in and out of its dots, then the line rests briefly
+        // at the dot while it fills and the step appears.
+        const segs = gsap.utils.toArray<SVGPathElement>(".process__seg");
+        const tip = root.current!.querySelector<SVGCircleElement>(".process__tip")!;
+        const lens = segs.map((sg) => sg.getTotalLength());
+        const ys = [WAYPOINTS[0][1], ...STEP_LAYOUT.map((l) => l.dot[1]), WAYPOINTS[WAYPOINTS.length - 1][1]];
+        const HOLD = 55; // pause at each dot, in sketch units of scroll
+
+        const tl = gsap.timeline({
+          defaults: { ease: "none" },
+          scrollTrigger: {
+            trigger: map,
+            start: `top ${LINE_AT}`,
+            end: `bottom ${LINE_AT}`,
+            scrub: rm ? true : 1,
+          },
+          onUpdate() {
+            const p = this.progress();
+            tip.style.opacity = p > 0.002 && p < 0.998 ? "1" : "0";
+          },
+        });
+        tl.to({}, { duration: SKETCH_H - ys[0] }, 0); // full length, so time maps 1:1 to sketch height
+
+        segs.forEach((seg, i) => {
+          const start = ys[i] - ys[0] + (i > 0 ? HOLD : 0);
+          const dur = Math.max(20, ys[i + 1] - ys[i] - (i > 0 ? HOLD : 0));
+          tl.fromTo(
             seg,
-            { strokeDashoffset: 1 },
+            { strokeDashoffset: 1000 },
             {
               strokeDashoffset: 0,
-              ease: "none",
-              scrollTrigger: {
-                trigger: from,
-                start: i === 0 ? `top ${LINE_AT}` : `center ${LINE_AT}`,
-                endTrigger: to,
-                end: dots[i] ? `center ${LINE_AT}` : `bottom ${LINE_AT}`,
-                scrub: rm ? true : 0.5,
+              duration: dur,
+              ease: rm ? "none" : "sine.inOut", // slow into and out of each dot
+              onUpdate() {
+                // ratio = eased progress, so the tip sits exactly at the end of the drawn line
+                const p = this.ratio;
+                const pt = seg.getPointAtLength(p * lens[i]);
+                tip.setAttribute("cx", String(pt.x));
+                tip.setAttribute("cy", String(pt.y));
+                // the dot at the end of this piece is lit only once the line has reached it
+                if (i < steps.length) {
+                  const on = this.progress() >= 1;
+                  steps[i].classList.toggle("is-on", on);
+                  if (on) showText(i);
+                }
               },
-            }
+            },
+            start
           );
         });
       });
@@ -437,29 +550,19 @@ function Process() {
             scrollTrigger: { trigger: map, start: `top ${LINE_AT}`, end: `bottom ${LINE_AT}`, scrub: rm ? true : 0.5 },
           }
         );
-      });
-
-      // a dot lights up the moment the line reaches it, and its step appears
-      steps.forEach((step, i) => {
-        // stays lit after you pass it; only goes out when you scroll back above it
-        ScrollTrigger.create({
-          trigger: dots[i],
-          start: `center ${LINE_AT}`,
-          onEnter: () => step.classList.add("is-on"),
-          onLeaveBack: () => step.classList.remove("is-on"),
+        // a dot lights up as the line passes it; it goes out again if you scroll back above it
+        steps.forEach((step, i) => {
+          gsap.set(step.querySelectorAll(".process__text > *"), { autoAlpha: 0 });
+          ScrollTrigger.create({
+            trigger: dots[i],
+            start: `center ${LINE_AT}`,
+            onEnter: () => {
+              step.classList.add("is-on");
+              showText(i);
+            },
+            onLeaveBack: () => step.classList.remove("is-on"),
+          });
         });
-        gsap.fromTo(
-          step.querySelectorAll(".process__text > *"),
-          { y: rm ? 0 : 18, autoAlpha: 0 },
-          {
-            y: 0,
-            autoAlpha: 1,
-            duration: 0.8,
-            ease: "expo.out",
-            stagger: 0.06,
-            scrollTrigger: { trigger: dots[i], start: `center ${LINE_AT}`, once: true },
-          }
-        );
       });
     },
     { dependencies: [revealed], scope: root }
@@ -486,8 +589,9 @@ function Process() {
         <svg className="process__svg" viewBox={`0 0 ${SKETCH_W} ${SKETCH_H}`} aria-hidden="true">
           <path className="process__track" d={TRACK_D} />
           {PIECES.map((d, i) => (
-            <path key={i} className="process__seg" d={d} pathLength={1} />
+            <path key={i} className="process__seg" d={d} pathLength={1000} />
           ))}
+          <circle className="process__tip" r="7" cx={WAYPOINTS[0][0]} cy={WAYPOINTS[0][1]} />
         </svg>
         <span className="process__line" aria-hidden="true" />
         <ol className="process__steps">

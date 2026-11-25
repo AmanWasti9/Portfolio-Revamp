@@ -13,6 +13,12 @@ const CHROME = process.env.CHROME_PATH ?? "C:/Program Files/Google/Chrome/Applic
 const FRAMES = ["showcase", "detail-1", "detail-2"];
 
 const MOCKUPS = {
+  dealboard: {
+    out: "dealboard",
+    pieces: { board: "#app-board", ai: "#ai-card", undo: "#undo", lead: "#lead-panel", forecast: "#forecast" },
+    // capture the board without its undo toast; the toast is placed separately in the frame
+    isolate: true,
+  },
   beacon: {
     out: "beacon",
     pieces: { post1: "#post-1", post3: "#post-3", article: "#article", editor: "#editor", note: ".hero-art .note" },
@@ -54,6 +60,19 @@ const MOCKUPS = {
 };
 
 const only = process.argv[2];
+
+// The link-preview card (public/og.png) is a single frame, not a product mockup.
+if (!only || only === "og") {
+  const b = await puppeteer.launch({ executablePath: CHROME, headless: "new" });
+  const pg = await b.newPage();
+  await pg.setViewport({ width: 1300, height: 700, deviceScaleFactor: 1 });
+  await pg.goto(pathToFileURL(path.resolve("mockups/og/index.html")).href, { waitUntil: "networkidle0" });
+  await pg.evaluate(() => document.fonts.ready);
+  await (await pg.$("#card")).screenshot({ path: path.resolve("public/og.png") });
+  await b.close();
+  console.log("✓ og card → public/og.png");
+  if (only === "og") process.exit(0);
+}
 const browser = await puppeteer.launch({ executablePath: CHROME, headless: "new" });
 const page = await browser.newPage();
 

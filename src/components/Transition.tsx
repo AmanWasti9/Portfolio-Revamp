@@ -146,7 +146,9 @@ export function TransitionProvider({ children }: { children: ReactNode }) {
     scrollToTop(true);
     if ("scrollRestoration" in history) history.scrollRestoration = "manual";
 
-    document.title = `${site.firstName} — ${site.role}`;
+    // a direct visit to /work, /about… gets that page's title, the home page keeps the full one
+    document.title =
+      pathRef.current === "/" ? `${site.firstName} — ${site.role}` : `${routeLabel(pathRef.current)} — ${site.firstName}`;
     const rm = reducedMotion();
 
     const chars = splitInto(wordmark.current!, site.firstName);

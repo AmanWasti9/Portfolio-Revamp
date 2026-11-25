@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DEALBOARD — The intelligence behind every deal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --orange: #f0481c;
+      --orange-600: #d63b11;
+      --orange-50: #fdeee8;
+      --lime: #d4ef78;
+      --lime-ink: #2f3a0a;
+      --ink: #141210;
+      --ink-2: #2b2823;
+      --muted: #77726a;
+      --line: #e9e6e0;
+      --paper: #f4f3f0;
+      --white: #ffffff;
+      --amber: #f2a51c;
+      --shadow: 0 30px 60px -30px rgba(20, 18, 16, 0.35), 0 2px 6px rgba(20, 18, 16, 0.05);
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: "Schibsted Grotesk", "Segoe UI", system-ui, sans-serif; color: var(--ink); background: var(--white); -webkit-font-smoothing: antialiased; }
+    a { color: inherit; text-decoration: none; }
+    svg { display: block; }
+    .wrap { width: min(1260px, 100% - 64px); margin: 0 auto; }
+    .mono { font-family: "JetBrains Mono", ui-monospace, monospace; }
+    .btn { display: inline-flex; align-items: center; gap: 10px; padding: 12px 20px; border-radius: 8px; font-weight: 600; font-size: 15px; white-space: nowrap; }
+    .btn-o { background: var(--orange); color: var(--white); box-shadow: 0 10px 20px -12px rgba(240, 72, 28, 0.9); }
+    .btn-o:hover { background: var(--orange-600); }
+    .btn-l { border: 1px solid var(--line); background: var(--white); }
+    .up { display: inline-flex; align-items: center; gap: 3px; padding: 2px 6px; border-radius: 4px; background: var(--lime); color: var(--lime-ink); font-size: 11px; font-weight: 700; }
+    .pill { display: inline-block; padding: 3px 8px; border-radius: 5px; font-size: 11.5px; font-weight: 600; }
+    .p-prop { background: var(--orange-50); color: var(--orange-600); }
+    .p-neg { background: #fde4e4; color: #c22b2b; }
+    .p-qual { background: #eef3dc; color: #546b12; }
+    .av { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; font-size: 10px; font-weight: 700; color: var(--white); flex: none; }
+
+    /* logo mark: rising bars */
+    .mark { width: 30px; height: 30px; border-radius: 7px; background: var(--ink); display: grid; place-items: center; }
+    .mark svg { width: 18px; height: 18px; }
+
+    /* ── nav ─────────────────────────────── */
+    .nav { display: flex; align-items: center; justify-content: space-between; padding: 22px 0; }
+    .logo { display: flex; align-items: center; gap: 12px; font-weight: 800; font-size: 18px; letter-spacing: 0.06em; }
+    .links { display: flex; gap: 32px; font-weight: 500; font-size: 15px; margin-right: auto; margin-left: 48px; }
+    .nav-r { display: flex; align-items: center; gap: 18px; font-weight: 500; font-size: 15px; }
+
+    /* ── hero ────────────────────────────── */
+    .hero { position: relative; overflow: hidden; }
+    .hero::after { content: ""; position: absolute; top: 0; bottom: 0; left: 57%; right: 0; background: var(--paper); z-index: -1; }
+    .hero-grid { display: grid; grid-template-columns: 1fr 1.05fr; gap: 40px; align-items: center; padding: 40px 0 70px; }
+    .eyebrow { font-size: 13px; font-weight: 700; letter-spacing: 0.12em; color: var(--orange); }
+    h1 { margin: 18px 0 22px; font-size: clamp(44px, 5.4vw, 74px); line-height: 1.02; letter-spacing: -0.035em; font-weight: 700; }
+    .lead { margin: 0; max-width: 42ch; font-size: 18.5px; line-height: 1.6; color: #4a463f; }
+    .ctas { display: flex; gap: 12px; margin-top: 32px; }
+    .ctas .btn { padding: 14px 22px; font-size: 16px; }
+    .trust { display: flex; align-items: center; gap: 10px; margin-top: 46px; padding-top: 22px; border-top: 1px solid var(--line); font-size: 14px; color: var(--muted); }
+
+    .stage { position: relative; height: 560px; }
+    .dash { position: absolute; left: 0; top: 90px; width: 600px; display: grid; grid-template-columns: 48px 1fr; border-radius: 12px; overflow: hidden; background: var(--white); box-shadow: var(--shadow); }
+    .rail { background: var(--ink); padding: 14px 0; display: grid; justify-items: center; align-content: start; gap: 18px; }
+    .rail i { width: 26px; height: 26px; border-radius: 6px; display: grid; place-items: center; color: #8d877d; }
+    .rail i.on { background: var(--orange); color: var(--white); }
+    .dash-main { padding: 16px; min-width: 0; }
+    .dash-main h4 { margin: 0 0 14px; font-size: 14px; }
+    .kpis { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+    .kpi { padding: 12px; border-left: 1px solid var(--line); }
+    .kpi:first-child { border: 0; background: var(--ink); color: var(--white); }
+    .kpi small { display: block; font-size: 11px; color: var(--muted); }
+    .kpi:first-child small { color: #a9a398; }
+    .kpi b { display: block; margin: 4px 0 6px; font-size: 20px; letter-spacing: -0.02em; }
+    .chart { margin-top: 12px; padding: 12px; border: 1px solid var(--line); border-radius: 8px; }
+    .chart-head { display: flex; justify-content: space-between; font-size: 12.5px; font-weight: 600; }
+    .chart-head span { display: flex; gap: 12px; font-weight: 500; color: var(--muted); font-size: 11px; }
+    .rows { margin-top: 12px; border: 1px solid var(--line); border-radius: 8px; }
+    .row { display: grid; grid-template-columns: 26px 1fr auto auto 80px; align-items: center; gap: 10px; padding: 9px 12px; font-size: 13px; border-top: 1px solid var(--line); }
+    .row:first-child { border: 0; }
+    .row .ini { width: 22px; height: 22px; border-radius: 50%; background: #efede8; display: grid; place-items: center; font-size: 9px; color: var(--muted); }
+    .row b { text-align: right; }
+    .toast { position: absolute; right: 0; top: 0; width: 260px; padding: 14px 16px; border-radius: 10px; background: var(--white); box-shadow: var(--shadow); font-size: 12px; }
+    .toast .t1 { display: flex; justify-content: space-between; color: var(--muted); }
+    .toast b { display: block; margin-top: 10px; font-size: 15px; }
+    .toast .stg { color: var(--muted); }
+    .prog { display: flex; gap: 4px; margin: 12px 0; }
+    .prog i { flex: 1; height: 3px; border-radius: 2px; background: var(--orange); }
+    .prog i:last-child { background: var(--line); }
+    .toast .t2 { display: flex; justify-content: space-between; align-items: baseline; }
+    .toast .t2 b { margin: 0; font-size: 17px; }
+    .ai { position: absolute; left: -40px; bottom: 30px; width: 300px; padding: 16px; border-radius: 10px; background: var(--ink); color: var(--white); box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.55); }
+    .ai small { display: flex; align-items: center; gap: 6px; font-size: 11px; letter-spacing: 0.1em; color: var(--orange); font-weight: 700; }
+    .ai b { display: block; margin: 8px 0 4px; font-size: 15px; }
+    .ai p { margin: 0; font-size: 12.5px; color: #b8b2a7; line-height: 1.5; }
+    .meter { display: flex; align-items: center; gap: 8px; margin-top: 12px; font-size: 12px; color: var(--lime); font-weight: 600; }
+    .meter span { display: flex; gap: 2px; }
+    .meter span i { width: 4px; height: 12px; background: var(--lime); border-radius: 1px; }
+    .meter span i.off { background: #3d3a35; }
+
+    /* ── section shell ───────────────────── */
+    section.block { padding: 110px 0; }
+    .head { max-width: 640px; margin-bottom: 48px; }
+    h2 { margin: 14px 0 12px; font-size: 46px; line-height: 1.05; letter-spacing: -0.035em; font-weight: 700; }
+    .sub { margin: 0; font-size: 17.5px; line-height: 1.6; color: #5b564e; }
+
+    /* ── app: pipeline ───────────────────── */
+    .appsec { background: var(--paper); }
+    .app { border-radius: 14px; overflow: hidden; background: var(--white); box-shadow: var(--shadow); display: grid; grid-template-columns: 58px 1fr; }
+    .app .rail { padding: 18px 0; gap: 20px; }
+    .topbar { display: flex; align-items: center; gap: 12px; padding: 14px 20px; border-bottom: 1px solid var(--line); }
+    .topbar h3 { margin: 0 auto 0 0; font-size: 19px; letter-spacing: -0.02em; }
+    .search { display: flex; align-items: center; gap: 10px; width: 280px; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--line); color: var(--muted); font-size: 13.5px; }
+    .search kbd { margin-left: auto; padding: 2px 6px; border-radius: 4px; border: 1px solid var(--line); font: 500 11px "JetBrains Mono", monospace; }
+    .tools { display: flex; align-items: center; gap: 8px; padding: 12px 20px; border-bottom: 1px solid var(--line); font-size: 13px; }
+    .chip { display: inline-flex; align-items: center; gap: 6px; padding: 6px 11px; border-radius: 7px; border: 1px solid var(--line); font-weight: 500; }
+    .chip.on { background: var(--ink); border-color: var(--ink); color: var(--white); }
+    .tools .sp { margin-left: auto; }
+    .board { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; padding: 16px 20px 20px; background: #faf9f7; }
+    .col h5 { display: flex; align-items: center; gap: 8px; margin: 0 0 4px; font-size: 13px; }
+    .col h5 i { width: 8px; height: 8px; border-radius: 2px; }
+    .col h5 span { margin-left: auto; color: var(--muted); font-weight: 500; }
+    .col .sum { margin: 0 0 10px; font-size: 12px; color: var(--muted); }
+    .card { padding: 12px; margin-bottom: 10px; border-radius: 9px; background: var(--white); border: 1px solid var(--line); box-shadow: 0 1px 2px rgba(20, 18, 16, 0.04); font-size: 12.5px; }
+    .card b { display: block; font-size: 13.5px; }
+    .card .co { color: var(--muted); }
+    .card .ft { display: flex; align-items: center; justify-content: space-between; margin-top: 12px; }
+    .card .val { font-weight: 700; font-size: 14px; }
+    .score { display: inline-flex; align-items: center; gap: 4px; padding: 2px 7px; border-radius: 999px; font-size: 11px; font-weight: 700; }
+    .s-hi { background: var(--lime); color: var(--lime-ink); }
+    .s-md { background: #fdf0d8; color: #8a5600; }
+    .s-lo { background: #efede8; color: var(--muted); }
+    .card.drag { transform: rotate(3deg) translateY(-6px); box-shadow: 0 24px 40px -18px rgba(20, 18, 16, 0.5); border-color: var(--orange); }
+    .drop { height: 70px; border: 2px dashed #f4b7a3; border-radius: 9px; background: var(--orange-50); margin-bottom: 10px; }
+    .undo { display: flex; align-items: center; gap: 14px; position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%); padding: 11px 16px; border-radius: 10px; background: var(--ink); color: var(--white); font-size: 13.5px; box-shadow: var(--shadow); }
+    .undo a { color: var(--orange); font-weight: 700; }
+    .boardwrap { position: relative; }
+
+    /* ── lead panel + forecast ───────────── */
+    .duo { display: grid; grid-template-columns: 1fr 1.25fr; gap: 24px; margin-top: 24px; }
+    .panel { border-radius: 14px; background: var(--white); box-shadow: var(--shadow); overflow: hidden; }
+    .ph { display: flex; align-items: center; gap: 12px; padding: 18px 20px; border-bottom: 1px solid var(--line); }
+    .ph .logo-co { width: 40px; height: 40px; border-radius: 10px; background: var(--ink); color: var(--white); display: grid; place-items: center; font-weight: 800; }
+    .ph b { display: block; font-size: 17px; }
+    .ph small { color: var(--muted); font-size: 13px; }
+    .ph .x { margin-left: auto; color: var(--muted); }
+    .pb { padding: 20px; }
+    .scorebox { display: flex; align-items: center; gap: 18px; padding: 16px; border-radius: 12px; background: var(--ink); color: var(--white); }
+    .ring { position: relative; width: 78px; height: 78px; flex: none; }
+    .ring b { position: absolute; inset: 0; display: grid; place-items: center; font-size: 24px; }
+    .scorebox small { display: block; font-size: 12px; color: #a9a398; }
+    .scorebox strong { display: block; margin: 2px 0 6px; font-size: 17px; }
+    .label { margin: 20px 0 10px; font-size: 12px; font-weight: 700; letter-spacing: 0.08em; color: var(--muted); }
+    .sig { display: flex; gap: 12px; padding: 10px 0; border-top: 1px solid var(--line); font-size: 13.5px; }
+    .sig:first-of-type { border: 0; }
+    .sig i { width: 28px; height: 28px; border-radius: 8px; flex: none; display: grid; place-items: center; background: var(--orange-50); color: var(--orange); font-style: normal; }
+    .sig small { display: block; color: var(--muted); font-size: 12px; }
+    .facts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .facts div { padding: 10px 12px; border-radius: 8px; background: #faf9f7; font-size: 12px; color: var(--muted); }
+    .facts b { display: block; margin-top: 2px; font-size: 14px; color: var(--ink); }
+    .pa { display: flex; gap: 8px; padding: 0 20px 20px; }
+    .pa .btn { flex: 1; justify-content: center; padding: 11px; font-size: 14px; }
+
+    .fc .ph { justify-content: space-between; }
+    .seg { display: flex; padding: 3px; border-radius: 8px; background: #f2f0ec; font-size: 12.5px; font-weight: 600; }
+    .seg span { padding: 6px 12px; border-radius: 6px; color: var(--muted); }
+    .seg span.on { background: var(--white); color: var(--ink); box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08); }
+    .fcstats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 14px; }
+    .fcstats div { font-size: 12px; color: var(--muted); }
+    .fcstats b { display: block; margin-top: 3px; font-size: 22px; color: var(--ink); letter-spacing: -0.02em; }
+    .legend { display: flex; gap: 16px; margin-top: 10px; font-size: 12px; color: var(--muted); }
+    .legend i { display: inline-block; width: 18px; height: 8px; margin-right: 6px; border-radius: 2px; vertical-align: 0; }
+
+    /* ── automation ──────────────────────── */
+    .flow { position: relative; margin-top: 24px; padding: 26px; border-radius: 14px; background: var(--ink); color: var(--white); box-shadow: var(--shadow); overflow: hidden; }
+    .flow::before { content: ""; position: absolute; inset: 0; background-image: radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px); background-size: 22px 22px; }
+    .flow-top { position: relative; display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+    .flow-top b { font-size: 17px; }
+    .flow-top small { color: #a9a398; font-size: 13px; margin-left: 10px; }
+    .live { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 999px; background: rgba(212, 239, 120, 0.14); color: var(--lime); font-size: 12.5px; font-weight: 600; }
+    .live i { width: 7px; height: 7px; border-radius: 50%; background: var(--lime); }
+    .nodes { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); gap: 46px; align-items: center; }
+    .node { position: relative; padding: 16px; border-radius: 12px; background: #1f1c19; border: 1px solid #36322d; }
+    .node:not(:last-child)::after { content: ""; position: absolute; left: 100%; top: 50%; width: 46px; height: 2px; background: repeating-linear-gradient(90deg, var(--orange) 0 6px, transparent 6px 10px); }
+    .node small { display: block; font-size: 11px; letter-spacing: 0.1em; font-weight: 700; color: #a9a398; }
+    .node.trig small { color: var(--orange); }
+    .node b { display: block; margin: 8px 0 4px; font-size: 15px; }
+    .node p { margin: 0; font-size: 12.5px; color: #b8b2a7; line-height: 1.45; }
+    .node .nico { width: 32px; height: 32px; border-radius: 9px; display: grid; place-items: center; margin-bottom: 12px; background: #2d2925; }
+    .node.trig .nico { background: var(--orange); }
+
+    /* ── features ────────────────────────── */
+    .fgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+    .feat { padding: 24px; border-radius: 12px; border: 1px solid var(--line); }
+    .feat .ico { width: 42px; height: 42px; border-radius: 10px; display: grid; place-items: center; background: var(--orange-50); color: var(--orange); }
+    .feat h3 { margin: 18px 0 6px; font-size: 18px; letter-spacing: -0.01em; }
+    .feat p { margin: 0; color: var(--muted); line-height: 1.55; font-size: 14.5px; }
+    .cta { display: flex; align-items: center; justify-content: space-between; gap: 30px; padding: 56px; border-radius: 18px; background: var(--ink); color: var(--white); }
+    .cta h2 { margin: 0 0 8px; }
+    .cta .sub { color: #b8b2a7; }
+    footer { padding: 36px 0; display: flex; justify-content: space-between; align-items: center; color: var(--muted); font-size: 14px; }
+
+    /* ── responsive ──────────────────────── */
+    @media (max-width: 900px) {
+      .wrap { width: calc(100% - 32px); }
+      .links, .nav-r .si { display: none; }
+      .nav-r .btn { padding: 10px 14px; font-size: 14px; }
+      .hero::after { display: none; }
+      .hero-grid { grid-template-columns: 1fr; padding: 22px 0 50px; gap: 10px; }
+      h1 { font-size: 42px; }
+      .lead { font-size: 16.5px; }
+      .ctas { flex-wrap: wrap; }
+      .ctas .btn { padding: 12px 16px; font-size: 15px; }
+      .trust { margin-top: 30px; }
+      .stage { height: 470px; margin: 0 -16px; padding: 0 16px; background: var(--paper); }
+      .stage { height: 500px; }
+      .dash { left: 16px; right: 16px; width: auto; top: 120px; }
+      .dash-main { padding: 12px; }
+      .kpi { padding: 8px; }
+      .kpi small { font-size: 10px; }
+      .up { font-size: 9.5px; padding: 2px 4px; }
+      .dash .rows { display: none; }
+      .kpi b { font-size: 16px; }
+      .toast { right: 16px; width: 210px; top: 18px; z-index: 2; }
+      .ai { left: 16px; right: 40px; width: auto; bottom: 18px; }
+      section.block { padding: 64px 0; }
+      h2 { font-size: 32px; }
+      .search { display: none; }
+      .board { grid-template-columns: repeat(5, 240px); overflow: hidden; }
+      .duo, .fgrid { grid-template-columns: 1fr; }
+      .nodes { grid-template-columns: 1fr; gap: 26px; }
+      .node:not(:last-child)::after { left: 50%; top: 100%; width: 2px; height: 26px; background: repeating-linear-gradient(180deg, var(--orange) 0 6px, transparent 6px 10px); }
+      .cta { flex-direction: column; align-items: flex-start; padding: 32px 24px; }
+    }
+  </style>
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="bars" viewBox="0 0 18 18"><rect x="1" y="10" width="4" height="7" rx="1" fill="#f2a51c" /><rect x="7" y="6" width="4" height="11" rx="1" fill="#f0481c" /><rect x="13" y="1" width="4" height="16" rx="1" fill="#f0481c" /></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="7" height="7" rx="1.5" /><rect x="13" y="4" width="7" height="7" rx="1.5" /><rect x="4" y="13" width="7" height="7" rx="1.5" /><rect x="13" y="13" width="7" height="7" rx="1.5" /></symbol>
+    <symbol id="i-kan" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="4.5" height="16" rx="1" /><rect x="10" y="4" width="4.5" height="11" rx="1" /><rect x="16" y="4" width="4.5" height="7" rx="1" /></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4" /><path d="M4 21c1-4 4-6 8-6s7 2 8 6" /></symbol>
+    <symbol id="i-trend" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 17l6-6 4 4 8-8" /><path d="M15 7h6v6" /></symbol>
+    <symbol id="i-bolt" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L4 14h7l-1 8 9-12h-7z" /></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7" /><path d="M20 20l-4-4" /></symbol>
+  </svg>
+
+  <div class="hero" id="top">
+    <div class="wrap">
+      <header class="nav">
+        <a class="logo" href="#top"><span class="mark"><svg><use href="#bars" /></svg></span>DEALBOARD</a>
+        <nav class="links"><a href="#pipeline">Product</a><a href="#intel">Solutions</a><a href="#flow">Resources</a><a href="#features">Pricing</a></nav>
+        <div class="nav-r"><a class="si" href="#top">Sign In</a><a class="btn btn-o" href="#cta">Get Started</a></div>
+      </header>
+
+      <div class="hero-grid">
+        <div>
+          <div class="eyebrow">THE INTELLIGENCE BEHIND EVERY DEAL</div>
+          <h1>Turn Every Opportunity Into Your Next Win.</h1>
+          <p class="lead">Your sales pipeline, lead intelligence, and revenue forecast — finally working together. Make smarter decisions and close with confidence.</p>
+          <div class="ctas">
+            <a class="btn btn-o" href="#pipeline">Explore the Platform
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+            </a>
+            <a class="btn btn-l" href="#flow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"><path d="M7 4.5v15l13-7.5z" /></svg>See How It Works</a>
+          </div>
+          <div class="trust"><svg width="18" height="18"><use href="#bars" /></svg>Built for teams that think beyond the pipeline.</div>
+        </div>
+
+        <div class="stage" aria-hidden="true">
+          <div class="dash" id="hero-dash">
+            <div class="rail"><span class="mark" style="width:26px;height:26px"><svg style="width:15px;height:15px"><use href="#bars" /></svg></span><i class="on"><svg width="15" height="15"><use href="#i-grid" /></svg></i><i><svg width="15" height="15"><use href="#i-kan" /></svg></i><i><svg width="15" height="15"><use href="#i-user" /></svg></i><i><svg width="15" height="15"><use href="#i-trend" /></svg></i></div>
+            <div class="dash-main">
+              <h4>Overview</h4>
+              <div class="kpis">
+                <div class="kpi"><small>Total Pipeline</small><b>$2.34M</b><span class="up">▲ +18.6%</span></div>
+                <div class="kpi"><small>Closed Won</small><b>$486.2K</b><span class="up">▲ +12.4%</span></div>
+                <div class="kpi"><small>Win Rate</small><b>32.8%</b><span class="up">▲ +4.2%</span></div>
+              </div>
+              <div class="chart">
+                <div class="chart-head">Revenue performance<span><span style="color:#f0481c">■</span> Actual &nbsp; ┄ Target</span></div>
+                <svg viewBox="0 0 500 110" style="width:100%;margin-top:6px">
+                  <defs><linearGradient id="fillo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f0481c" stop-opacity=".18" /><stop offset="1" stop-color="#f0481c" stop-opacity="0" /></linearGradient></defs>
+                  <path d="M10 78 L490 30" stroke="#8d877d" stroke-width="1.5" stroke-dasharray="4 4" fill="none" />
+                  <path d="M10 82 C60 80 90 70 140 66 S210 54 240 56 S300 40 330 42 S370 66 400 62 S450 40 490 28 L490 100 L10 100 Z" fill="url(#fillo)" />
+                  <path d="M10 82 C60 80 90 70 140 66 S210 54 240 56 S300 40 330 42 S370 66 400 62 S450 40 490 28" stroke="#f0481c" stroke-width="2.4" fill="none" />
+                  <g font-size="10" fill="#77726a" font-family="Schibsted Grotesk"><text x="50" y="108">Apr</text><text x="125" y="108">May</text><text x="200" y="108">Jun</text><text x="275" y="108">Jul</text><text x="350" y="108">Aug</text><text x="425" y="108">Sep</text></g>
+                </svg>
+              </div>
+              <div class="rows">
+                <div class="row"><span class="ini">MB</span>Meridian Bank<span class="av" style="background:#f2a51c;width:20px;height:20px;font-size:8px">DC</span><span class="pill p-prop">Proposal</span><b>$88,500</b></div>
+                <div class="row"><span class="ini">VS</span>Vertex Solutions<span class="av" style="background:#8bb22c;width:20px;height:20px;font-size:8px">EB</span><span class="pill p-prop">Proposal</span><b>$76,000</b></div>
+                <div class="row"><span class="ini">SH</span>Summit Health<span class="av" style="background:#8bb22c;width:20px;height:20px;font-size:8px">EB</span><span class="pill p-neg">Negotiation</span><b>$63,400</b></div>
+              </div>
+            </div>
+          </div>
+          <div class="toast" id="toast-moved">
+            <div class="t1"><span>Deal moved</span><span>just now</span></div>
+            <b>Acme Technologies</b><span class="stg">Proposal → Negotiation</span>
+            <div class="prog"><i></i><i></i><i></i><i></i><i></i></div>
+            <div class="t2"><b>$48,000</b><span class="stg">80% prob.</span></div>
+          </div>
+          <div class="ai" id="ai-card">
+            <small>✶ DEALBOARD AI</small>
+            <b>Northstar Labs is ready for a demo</b>
+            <p>3 stakeholders viewed pricing. CTO downloaded the technical docs.</p>
+            <div class="meter"><span><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="off"></i></span>94 · High intent</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── the product ─────────────────────────────── -->
+  <section class="block appsec" id="pipeline">
+    <div class="wrap">
+      <div class="head"><div class="eyebrow">PIPELINE</div><h2>Every deal, every stage, one board.</h2><p class="sub">Drag deals between stages, see what each one is worth and let the AI flag the ones that need you today.</p></div>
+
+      <div class="app" id="app-board">
+        <div class="rail"><span class="mark"><svg><use href="#bars" /></svg></span><i><svg width="17" height="17"><use href="#i-grid" /></svg></i><i class="on"><svg width="17" height="17"><use href="#i-kan" /></svg></i><i><svg width="17" height="17"><use href="#i-user" /></svg></i><i><svg width="17" height="17"><use href="#i-trend" /></svg></i><i><svg width="17" height="17"><use href="#i-bolt" /></svg></i></div>
+        <div>
+          <div class="topbar">
+            <h3>Pipeline</h3>
+            <div class="search"><svg width="15" height="15"><use href="#i-search" /></svg>Search deals, leads, people…<kbd>Ctrl K</kbd></div>
+            <a class="btn btn-o" href="#pipeline" style="padding:9px 14px;font-size:14px">+ New deal</a>
+          </div>
+          <div class="tools">
+            <span class="chip on">All deals</span><span class="chip">My deals</span><span class="chip">Closing this month</span><span class="chip">Owner ▾</span>
+            <span class="chip sp">Sort: Value ▾</span><span class="chip">⇩ Export CSV</span>
+          </div>
+          <div class="boardwrap">
+            <div class="board">
+              <div class="col"><h5><i style="background:#c9c4bb"></i>Lead<span>6</span></h5><p class="sum">$214,000</p>
+                <div class="card"><b>Brightline Media</b><span class="co">Inbound · Website</span><div class="ft"><span class="val">$32,000</span><span class="score s-md">● 61</span></div></div>
+                <div class="card"><b>Orbit Logistics</b><span class="co">Referral</span><div class="ft"><span class="val">$18,500</span><span class="score s-lo">● 38</span></div></div>
+              </div>
+              <div class="col"><h5><i style="background:#f2a51c"></i>Qualified<span>5</span></h5><p class="sum">$342,800</p>
+                <div class="card"><b>Northstar Labs</b><span class="co">Demo requested</span><div class="ft"><span class="val">$54,000</span><span class="score s-hi">● 94</span></div></div>
+                <div class="card"><b>Kite Analytics</b><span class="co">Discovery call</span><div class="ft"><span class="val">$27,600</span><span class="score s-md">● 72</span></div></div>
+              </div>
+              <div class="col"><h5><i style="background:#f0481c"></i>Proposal<span>4</span></h5><p class="sum">$412,300</p>
+                <div class="card"><b>Meridian Bank</b><span class="co">Sent 2 days ago</span><div class="ft"><span class="val">$88,500</span><span class="score s-hi">● 86</span></div></div>
+                <div class="drop"></div>
+                <div class="card"><b>Vertex Solutions</b><span class="co">Pricing review</span><div class="ft"><span class="val">$76,000</span><span class="score s-md">● 74</span></div></div>
+              </div>
+              <div class="col"><h5><i style="background:#c22b2b"></i>Negotiation<span>3</span></h5><p class="sum">$187,400</p>
+                <div class="card drag"><b>Acme Technologies</b><span class="co">Legal review</span><div class="ft"><span class="val">$48,000</span><span class="score s-hi">● 88</span></div></div>
+                <div class="card"><b>Summit Health</b><span class="co">Final terms</span><div class="ft"><span class="val">$63,400</span><span class="score s-hi">● 81</span></div></div>
+              </div>
+              <div class="col"><h5><i style="background:#8bb22c"></i>Closed won<span>7</span></h5><p class="sum">$486,200</p>
+                <div class="card"><b>Harbor &amp; Co.</b><span class="co">Signed Oct 14</span><div class="ft"><span class="val">$71,000</span><span class="up">Won</span></div></div>
+                <div class="card"><b>Pinecrest Group</b><span class="co">Signed Oct 9</span><div class="ft"><span class="val">$42,500</span><span class="up">Won</span></div></div>
+              </div>
+            </div>
+            <div class="undo" id="undo">Moved <b>Acme Technologies</b> to Negotiation<a href="#pipeline">Undo</a></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="duo" id="intel">
+        <div class="panel" id="lead-panel">
+          <div class="ph"><span class="logo-co">N</span><div><b>Northstar Labs</b><small>Software · 120 employees · Austin</small></div><span class="x">✕</span></div>
+          <div class="pb">
+            <div class="scorebox">
+              <div class="ring"><svg viewBox="0 0 80 80"><circle cx="40" cy="40" r="34" stroke="#3d3a35" stroke-width="7" fill="none" /><circle cx="40" cy="40" r="34" stroke="#d4ef78" stroke-width="7" fill="none" stroke-linecap="round" stroke-dasharray="213.6" stroke-dashoffset="12.8" transform="rotate(-90 40 40)" /></svg><b>94</b></div>
+              <div><small>AI lead score</small><strong>High intent — book a demo</strong><span class="up">▲ +12 this week</span></div>
+            </div>
+            <div class="label">BUYING SIGNALS</div>
+            <div class="sig"><i>◎</i><div>3 stakeholders viewed pricing<small>Today, 10:42</small></div></div>
+            <div class="sig"><i>⇩</i><div>CTO downloaded the technical docs<small>Yesterday</small></div></div>
+            <div class="sig"><i>↗</i><div>Visited the integrations page 4 times<small>This week</small></div></div>
+            <div class="label">DEAL</div>
+            <div class="facts"><div>Value<b>$54,000</b></div><div>Stage<b>Qualified</b></div><div>Owner<b>Emma Brooks</b></div><div>Expected close<b>Dec 12</b></div></div>
+          </div>
+          <div class="pa"><a class="btn btn-o" href="#intel">Schedule demo</a><a class="btn btn-l" href="#intel">Edit lead</a></div>
+        </div>
+
+        <div class="panel fc" id="forecast">
+          <div class="ph"><div><b>Revenue forecast</b><small>Q4 2026 · updated hourly</small></div><div class="seg"><span>Month</span><span class="on">Quarter</span><span>Year</span></div></div>
+          <div class="pb">
+            <div class="fcstats"><div>Committed<b>$486K</b></div><div>Forecast<b>$742K</b></div><div>Target<b>$800K</b></div></div>
+            <svg viewBox="0 0 560 250" style="width:100%">
+              <g stroke="#efede8"><path d="M40 30H550M40 80H550M40 130H550M40 180H550M40 230H550" /></g>
+              <g font-size="11" fill="#77726a" font-family="Schibsted Grotesk"><text x="4" y="34">$800K</text><text x="4" y="84">$600K</text><text x="4" y="134">$400K</text><text x="4" y="184">$200K</text><text x="18" y="234">$0</text>
+                <text x="60" y="248">Jul</text><text x="145" y="248">Aug</text><text x="230" y="248">Sep</text><text x="315" y="248">Oct</text><text x="400" y="248">Nov</text><text x="485" y="248">Dec</text></g>
+              <!-- confidence range -->
+              <path d="M330 140 C380 118 440 96 545 60 L545 128 C440 150 380 160 330 152 Z" fill="#f0481c" opacity=".14" />
+              <path d="M40 30H550" stroke="#141210" stroke-width="1.5" stroke-dasharray="5 5" />
+              <path d="M60 215 C110 205 150 200 200 190 S280 170 330 146" stroke="#f0481c" stroke-width="3" fill="none" stroke-linecap="round" />
+              <path d="M330 146 C380 136 440 116 545 94" stroke="#f0481c" stroke-width="3" fill="none" stroke-dasharray="7 6" stroke-linecap="round" />
+              <circle cx="330" cy="146" r="6" fill="#fff" stroke="#f0481c" stroke-width="3" />
+              <g transform="translate(345 92)"><rect width="128" height="40" rx="7" fill="#141210" /><text x="12" y="17" font-size="11" fill="#a9a398" font-family="Schibsted Grotesk">Today · committed</text><text x="12" y="32" font-size="13" font-weight="700" fill="#fff" font-family="Schibsted Grotesk">$486,200</text></g>
+            </svg>
+            <div class="legend"><span><i style="background:#f0481c"></i>Actual</span><span><i style="background:repeating-linear-gradient(90deg,#f0481c 0 5px,transparent 5px 8px)"></i>Forecast</span><span><i style="background:#fbd6c9"></i>Confidence range</span><span><i style="background:repeating-linear-gradient(90deg,#141210 0 4px,transparent 4px 7px)"></i>Target</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flow" id="flow">
+        <div class="flow-top"><div><b>Hot lead follow-up</b><small>Automation · 4 steps</small></div><span class="live"><i></i>Live</span></div>
+        <div class="nodes">
+          <div class="node trig"><span class="nico"><svg width="16" height="16"><use href="#i-bolt" /></svg></span><small>TRIGGER</small><b>Lead score above 85</b><p>When the AI marks a lead as high intent.</p></div>
+          <div class="node"><span class="nico">⚑</span><small>CONDITION</small><b>No meeting booked</b><p>Only leads without an upcoming demo.</p></div>
+          <div class="node"><span class="nico">✉</span><small>ACTION</small><b>Send intro email</b><p>Personal note from the deal owner.</p></div>
+          <div class="node"><span class="nico">✓</span><small>ACTION</small><b>Create task in 2 days</b><p>Reminder to call if there's no reply.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="features">
+    <div class="wrap">
+      <div class="head"><div class="eyebrow">ONE WORKSPACE</div><h2>Everything a sales team checks, in one place.</h2></div>
+      <div class="fgrid">
+        <div class="feat"><span class="ico"><svg width="20" height="20"><use href="#i-kan" /></svg></span><h3>Visual pipeline</h3><p>Drag-and-drop deals with undo, filters, sorting and CSV export.</p></div>
+        <div class="feat"><span class="ico"><svg width="20" height="20"><use href="#i-user" /></svg></span><h3>AI lead scores</h3><p>Every lead scored, with the buying signals behind the number.</p></div>
+        <div class="feat"><span class="ico"><svg width="20" height="20"><use href="#i-trend" /></svg></span><h3>Honest forecasts</h3><p>A revenue forecast with a confidence range, not a single guess.</p></div>
+        <div class="feat"><span class="ico"><svg width="20" height="20"><use href="#i-bolt" /></svg></span><h3>Automations</h3><p>Build follow-up workflows that run themselves.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="cta" style="padding-top:0">
+    <div class="wrap">
+      <div class="cta"><div><h2>Know which deals will close.</h2><p class="sub">Pipeline, leads and forecast in one workspace.</p></div><a class="btn btn-o" href="#top">Get Started</a></div>
+      <footer><a class="logo" href="#top"><span class="mark"><svg><use href="#bars" /></svg></span>DEALBOARD</a><span>A concept project · 2026</span></footer>
+    </div>
+  </section>
+</body>
+</html>

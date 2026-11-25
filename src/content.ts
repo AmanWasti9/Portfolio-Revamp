@@ -33,9 +33,47 @@ export type Project = {
   outcome: string;
   // Focal points (object-position) used for the zoomed "detail" crops on the case study
   details: [string, string];
+  // false hides the original laptop photo on the case study (e.g. it shows outdated branding)
+  showPhoto?: boolean;
 };
 
 export const projects: Project[] = [
+  {
+    // a self-initiated concept, not client work: no clients, results or testimonials
+    slug: "dealboard",
+    title: "Dealboard",
+    kind: "AI sales platform (concept)",
+    year: "2026",
+    role: "Design & development",
+    stack: ["React 19", "TypeScript", "Vite", "Tailwind CSS", "Radix UI", "Recharts", "Framer Motion", "dnd-kit"],
+    image: "dealboard",
+    colors: [
+      { name: "Signal orange", hex: "#F0481C" },
+      { name: "Lime", hex: "#D4EF78" },
+      { name: "Graphite", hex: "#141210" },
+    ],
+    summary:
+      "Dealboard is a self-initiated concept: one workspace where sales teams see their pipeline, their best leads and their revenue forecast together.",
+    problem:
+      "Sales teams track deals in one tool, leads in another and forecasts in spreadsheets, so they can't tell which deals will close or why.",
+    approach: [
+      {
+        title: "One board for every deal",
+        body: "Drag deals between stages, undo a wrong move, filter, sort, search with Ctrl K and export to CSV.",
+      },
+      {
+        title: "Scores you can trust",
+        body: "Each lead gets an AI score, with the buying signals behind it shown right next to the number.",
+      },
+      {
+        title: "A forecast with honest ranges",
+        body: "The revenue chart shows a confidence range instead of one guess, plus simple automations for follow-ups.",
+      },
+    ],
+    outcome:
+      "I designed the brand and the interface, and built the full frontend, responsive down to mobile.",
+    details: ["70% 40%", "30% 55%"],
+  },
   {
     slug: "cogni",
     title: "Cogni",
@@ -136,8 +174,8 @@ export const projects: Project[] = [
     details: ["66% 40%", "34% 38%"],
   },
   {
-    slug: "pantry-traker",
-    title: "Pantry Traker",
+    slug: "pantry-tracker",
+    title: "Pantry Tracker",
     kind: "Pantry tracking app",
     year: "2025",
     role: "Design & development",
@@ -149,7 +187,7 @@ export const projects: Project[] = [
       { name: "Oat", hex: "#F1F1EC" },
     ],
     summary:
-      "Pantry Traker keeps track of the food you have at home, reminds you before you run out and helps you waste less.",
+      "Pantry Tracker keeps track of the food you have at home, reminds you before you run out and helps you waste less.",
     problem:
       "It's easy to forget what's already in the cupboard, so food gets thrown away and the same things get bought twice.",
     approach: [
@@ -168,29 +206,79 @@ export const projects: Project[] = [
     ],
     outcome: "A friendly launch page that explains the whole app in one screen.",
     details: ["62% 42%", "30% 45%"],
+    showPhoto: false, // the laptop photo still shows the old "Traker" spelling
   },
 ];
 
+// Starting prices: change the `price` text any time (e.g. "from $900", "$40 / hour").
 export const services = [
   {
     title: "Web apps",
-    body: "Complete products with accounts, data and everything behind the scenes, built to keep working as you grow.",
-    tags: ["Dashboards", "Online tools", "Accounts & data"],
+    price: "from $975",
+    body: "Complete products with accounts, data and everything behind the scenes.",
   },
   {
     title: "Websites",
-    body: "Fast, smooth websites that look right on every screen and make it clear what you offer.",
-    tags: ["Landing pages", "Company sites", "Portfolios"],
+    price: "from $475",
+    body: "Fast websites that look right on every screen and make your offer clear.",
   },
   {
     title: "AI features",
-    body: "Useful AI built into your product, like summaries, answers from your own documents and smarter workflows.",
-    tags: ["Summaries", "Chat", "Automation"],
+    price: "from $675",
+    body: "Useful AI in your product, like summaries and answers from your own documents.",
   },
   {
     title: "UI & UX design",
-    body: "Clear screens and flows that you see and approve before any code is written.",
-    tags: ["Figma", "Web apps", "Mobile"],
+    price: "from $375",
+    body: "Screens and flows you see and approve before any code is written.",
+  },
+  {
+    title: "AI PHOTOGRAPHY",
+    price: "from $12 for a photo",
+    body: "AI-generated images for your website, app or social media posts.",
+  },
+];
+
+// ─────────────────────────────────────────────────────────────
+//  Testimonials — REPLACE THESE WITH REAL CLIENT QUOTES.
+//  While `sample: true` is set, the site shows a "Sample" tag on the quote.
+//  Delete the `sample` line once a quote is real.
+//  source: where the review lives (e.g. "Upwork", "LinkedIn", "Email").
+//  rating: optional, 1–5 (shown as e.g. "★ 5.0 on Upwork").
+// ─────────────────────────────────────────────────────────────
+export type Testimonial = {
+  quote: string;
+  name: string;
+  role: string;
+  source?: string;
+  rating?: number;
+  sample?: boolean;
+};
+
+export const testimonials: Testimonial[] = [
+  {
+    // approved by the client
+    quote:
+      "Our website finally explains what we do. Visitors get it in seconds, and the whole thing feels fast and polished.",
+    name: "Ahmed Bashaar",
+    role: "Founder, Iframes",
+    source: "LinkedIn",
+  },
+  {
+    // approved by the client
+    quote:
+      "Amanullah took our idea from a rough sketch to a live product in a few weeks. Clear updates the whole way, and the design turned out better than we imagined.",
+    name: "Mazin",
+    role: "Founder, UIX Solutions",
+    source: "LinkedIn",
+  },
+  {
+    // approved by the client
+    quote:
+      "It's rare to find someone who cares about the design and the code equally. Everything was handed over clean and easy to update.",
+    name: "Rameez Raza",
+    role: "Founder, Cloud Axis Systems",
+    source: "Email",
   },
 ];
 
@@ -236,6 +324,11 @@ export const journey = {
       year: "Now",
       title: "Creative Design & Video",
       body: "Telling stories through motion and design, and turning simple ideas into something that feels alive.",
+    },
+    {
+      year: "2025",
+      title: "Building Real-World Products",
+      body: "Took products from idea to launch, handling the design and the development myself. The Pacer and Pantry Tracker came out of this year.",
     },
     {
       year: "2024",

@@ -158,7 +158,7 @@ function Case({ index }: { index: number }) {
       </section>
 
       {/* the showcase leads the page, so the original laptop scene takes this wide slot */}
-      {hasShowcase && (
+      {hasShowcase && p.showPhoto !== false && (
         <ImageReveal
           src={imgSrc(p.image, 2000)}
           srcSet={imgSrcSet(p.image)}

@@ -11,8 +11,9 @@ const OUT = path.resolve("public/work");
 const files = {
   "Beacon.png": "beacon",
   "Cogni AI Study Workspace.png": "cogni",
-  "Pantry Traker Laptop Hero Scene.png": "pantry",
+  "Pantry Tracker Laptop Hero Scene.png": "pantry",
   "The Pacer Laptop on Sunlit Concrete.png": "pacer",
+  "dealboard.png": "dealboard",
 };
 
 await mkdir(OUT, { recursive: true });
@@ -50,7 +51,7 @@ console.log("✓ process");
 const SLOTS = ["hero", "detail-1", "detail-2", "showcase"];
 const CASES = path.join(SRC, "case-studies");
 const manifest = {};
-for (const base of ["beacon", "cogni", "pacer", "pantry"]) {
+for (const base of ["beacon", "cogni", "pacer", "pantry", "dealboard"]) {
   const dir = path.join(CASES, base);
   if (!existsSync(dir)) continue;
   const names = await readdir(dir);
@@ -69,3 +70,15 @@ for (const base of ["beacon", "cogni", "pacer", "pantry"]) {
   }
 }
 await writeFile(path.resolve("src/generated/case-images.json"), JSON.stringify(manifest, null, 2) + "\n");
+
+// Decorative cut-outs for the services section: trim the empty transparent border, keep alpha.
+for (const name of ["computer", "mouse"]) {
+  for (const width of [900, 500]) {
+    await sharp(path.join(SRC, `${name}.png`))
+      .trim({ threshold: 1 })
+      .resize({ width, withoutEnlargement: true })
+      .webp({ quality: 82, alphaQuality: 90 })
+      .toFile(path.join(OUT, `${name}-${width}.webp`));
+  }
+  console.log("✓", name);
+}

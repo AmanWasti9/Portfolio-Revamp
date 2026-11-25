@@ -29,7 +29,7 @@ export function ContactBlock({ compact = false }: { compact?: boolean }) {
       // the hand-drawn underline under "fill out the form" draws in
       gsap.fromTo(
         ".cb__form path",
-        { strokeDashoffset: 1 },
+        { strokeDashoffset: 1000 },
         {
           strokeDashoffset: 0,
           duration: rm ? 0 : 1.1,
@@ -124,7 +124,7 @@ export function ContactBlock({ compact = false }: { compact?: boolean }) {
             <TLink to="/contact" className="cb__form">
               <Roll text="fill out the form" /> <span aria-hidden="true">↳</span>
               <svg viewBox="0 0 300 16" preserveAspectRatio="none" aria-hidden="true">
-                <path pathLength={1} d="M3 10C48 4 96 13 150 8s104-5 147 2" />
+                <path pathLength={1000} d="M3 10C48 4 96 13 150 8s104-5 147 2" />
               </svg>
             </TLink>
           </div>

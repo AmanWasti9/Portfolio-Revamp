@@ -21,7 +21,7 @@ Any of `.png`, `.jpg`, `.jpeg`, `.webp` works. Missing files fall back to the ol
 
 ## How to keep them consistent
 
-1. **Attach the project's current hero shot as a reference image** (from `assets/`: `Beacon.png`, `Cogni AI Study Workspace.png`, `The Pacer Laptop on Sunlit Concrete.png`, `Pantry Traker Laptop Hero Scene.png`). This keeps the UI, logo and colours identical to the hero.
+1. **Attach the project's current hero shot as a reference image** (from `assets/`: `Beacon.png`, `Cogni AI Study Workspace.png`, `The Pacer Laptop on Sunlit Concrete.png`, `Pantry Tracker Laptop Hero Scene.png`). This keeps the UI, logo and colours identical to the hero.
 2. **Paste the shared style line at the end of every prompt.**
 3. **Generate at least 2000px wide** (detail images at least 1600px wide).
 
@@ -64,13 +64,13 @@ Any of `.png`, `.jpg`, `.jpeg`, `.webp` works. Missing files fall back to the ol
 **showcase (16:9)**
 > Wide shot of concrete steps in strong sunlight: an open laptop showing The Pacer homepage "Power That You Run" with the athlete mid-jump, a smartphone beside it showing the product page, and a pair of white running sneakers on the step above. Bold diagonal shadow lines across the scene.
 
-## Pantry Traker — grocery inventory app (basil `#1D6B33`, sage, oat)
+## Pantry Tracker — grocery inventory app (basil `#1D6B33`, sage, oat)
 
 **detail-1 (4:5)**
-> A hand holding a smartphone in a bright kitchen, the screen showing the Pantry Traker "Your Pantry" list: Milk "2 left", Eggs "1 pack", Bread "Good", Apples "4 left", with a "Low Stock!" notification popping in at the top. A basket of fresh vegetables blurred behind.
+> A hand holding a smartphone in a bright kitchen, the screen showing the Pantry Tracker "Your Pantry" list: Milk "2 left", Eggs "1 pack", Bread "Good", Apples "4 left", with a "Low Stock!" notification popping in at the top. A basket of fresh vegetables blurred behind.
 
 **detail-2 (4:5)**
-> Macro shot of the Pantry Traker phone screen focused on the green category chips "All, Fresh, Dry, Frozen" and the yellow bell "Low Stock!" alert, resting on a light oak kitchen counter with a glass jar of pasta beside it.
+> Macro shot of the Pantry Tracker phone screen focused on the green category chips "All, Fresh, Dry, Frozen" and the yellow bell "Low Stock!" alert, resting on a light oak kitchen counter with a glass jar of pasta beside it.
 
 **showcase (16:9)**
-> A sunny kitchen counter: an open laptop showing the Pantry Traker homepage "Track Your Pantry, Smarter.", a smartphone showing the pantry list, glass jars of rice and pasta, fresh apples and a loaf of bread, a small potted herb. Soft morning light, clean and fresh.
+> A sunny kitchen counter: an open laptop showing the Pantry Tracker homepage "Track Your Pantry, Smarter.", a smartphone showing the pantry list, glass jars of rice and pasta, fresh apples and a loaf of bread, a small potted herb. Soft morning light, clean and fresh.
