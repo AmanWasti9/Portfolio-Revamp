@@ -355,15 +355,17 @@ export const process = [
 
 export const journey = {
   title: "My current journey",
+  // the short line shown next to "Currently" on the About page
+  currently: "Product development, creative design & SaaS product videos",
   intro: [
-    "Lately I've been exploring creative design and video: visuals and storytelling that make simple ideas more engaging.",
+    "Lately I've been focused on three things: building products end to end, more creative design work, and animated videos that show how SaaS products work.",
     "I'm still learning every day, and I focus on work that feels meaningful to the people who use it.",
   ],
   entries: [
     {
       year: "Now",
-      title: "Creative Design & Video",
-      body: "Telling stories through motion and design, and turning simple ideas into something that feels alive.",
+      title: "Product Development & Creative Design",
+      body: "Building products from idea to launch, designing with more creative freedom, and making animated videos that explain SaaS products in seconds.",
     },
     {
       year: "2025",
@@ -398,6 +400,15 @@ export const about = {
   paragraphs: [
     "I started building websites in 2021 and kept going until I could build whole products on my own. Lately that means AI tools like Beacon and Cogni.",
     "Because I design as well as code, nothing gets lost between the idea and what ships. You work with one person who cares how it works and how it feels.",
+  ],
+  // "Behind the work" strip: pencil drawings in public/work/about-*.webp
+  // (made from assets/about/ by `npm run images`). w/h = real pixel size of the big file.
+  behind: [
+    { img: "about-desk", w: 1500, h: 1000, title: "The desk", body: "Where every project starts: a sketchbook right next to the code." },
+    { img: "about-hands", w: 1122, h: 1402, title: "Paper first", body: "Ideas start as pencil sketches, while they're still quick to change." },
+    { img: "about-wall", w: 1500, h: 1000, title: "The plan", body: "Pages, features and flows mapped out before anything is built." },
+    { img: "about-sketch", w: 1500, h: 1000, title: "Sketch to screen", body: "The same layout, from a rough sketch to a working product." },
+    { img: "about-video", w: 1500, h: 1000, title: "Product videos", body: "Animated videos that show how a SaaS product works in seconds." },
   ],
   principles: [
     { title: "Clarity first", body: "Visitors should understand what you offer in seconds. If they can't, nothing else matters." },

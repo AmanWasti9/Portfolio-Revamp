@@ -104,29 +104,43 @@ function Package({ p, index }: { p: NpmPackage; index: number }) {
   return (
     <li className="oss__pkg" data-total={stats.total}>
       <span className="oss__rule" aria-hidden="true" />
-      <div className="oss__main">
+      {/* Layout (desktop): name across the top; the data under it on the left, so the
+          chart's timeline starts on the same edge as the name; what it does and how to
+          install it on the right. Phones: name → text → data. */}
+      <div className="oss__top">
         <span className="oss__idx">({String(index + 1).padStart(2, "0")})</span>
         <h3 className="oss__name">
           <a href={npmUrl(p.name)} target="_blank" rel="noreferrer" data-cursor="View on npm">
             {p.name}
           </a>
         </h3>
-        <p className="oss__summary">{p.summary}</p>
-        <ul className="oss__tags">
-          {p.highlights.map((h) => (
-            <li key={h}>{h}</li>
-          ))}
-        </ul>
-        <div className="oss__cmd">
-          <code>
-            <span aria-hidden="true">$</span> {cmd}
-          </code>
-          <button onClick={copy} aria-label={`Copy install command for ${p.name}`}>
-            {copied ? "Copied" : "Copy"}
-          </button>
-          <span className="sr-only" role="status">
-            {copied ? "Install command copied" : ""}
-          </span>
+      </div>
+      <div className="oss__text">
+        {/* two groups: "what it is" aligns with the top of the number,
+            "get it" aligns with the facts row at the bottom */}
+        <div className="oss__about">
+          <p className="oss__summary">{p.summary}</p>
+          <ul className="oss__tags">
+            {p.highlights.map((h) => (
+              <li key={h}>{h}</li>
+            ))}
+          </ul>
+        </div>
+        <div className="oss__get">
+          <div className="oss__cmd">
+            <code>
+              <span aria-hidden="true">$</span> {cmd}
+            </code>
+            <button onClick={copy} aria-label={`Copy install command for ${p.name}`}>
+              {copied ? "Copied" : "Copy"}
+            </button>
+            <span className="sr-only" role="status">
+              {copied ? "Install command copied" : ""}
+            </span>
+          </div>
+          <a className="link-line oss__npm" href={npmUrl(p.name)} target="_blank" rel="noreferrer">
+            <Roll text="View on npm" /> <span aria-hidden="true">↗</span>
+          </a>
         </div>
       </div>
 
@@ -157,9 +171,6 @@ function Package({ p, index }: { p: NpmPackage; index: number }) {
             <dd>TypeScript</dd>
           </div>
         </dl>
-        <a className="link-line oss__npm" href={npmUrl(p.name)} target="_blank" rel="noreferrer">
-          <Roll text="View on npm" /> <span aria-hidden="true">↗</span>
-        </a>
       </div>
     </li>
   );
@@ -178,7 +189,7 @@ export function OpenSource() {
         const tl = gsap.timeline({ scrollTrigger: { trigger: pkg, start: "top 80%", once: true } });
         tl.fromTo(pkg.querySelector(".oss__rule"), { scaleX: 0 }, { scaleX: 1, duration: rm ? 0 : 1.2, ease: "expo.inOut" })
           .fromTo(
-            pkg.querySelectorAll(".oss__main > *"),
+            pkg.querySelectorAll(".oss__top > *, .oss__about > *, .oss__get > *"),
             { y: rm ? 0 : 22, autoAlpha: 0 },
             { y: 0, autoAlpha: 1, duration: 0.9, ease: "expo.out", stagger: 0.06 },
             "<0.3"

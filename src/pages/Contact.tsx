@@ -4,7 +4,7 @@ import { site } from "../content";
 import { Roll, SplitReveal } from "../components/Motion";
 import { gsap } from "../lib/motion";
 
-const kinds = ["Website", "Landing page", "Web app", "AI feature", "Something else"];
+const kinds = ["Website", "Landing page", "Web app", "AI feature", "UI & UX design", "AI photography", "Something else"];
 const budgets = ["Under $1k", "$1k – $3k", "$3k – $6k", "$6k+"];
 
 // EmailJS keys come from .env (see .env.example). All three are safe to ship to the browser.

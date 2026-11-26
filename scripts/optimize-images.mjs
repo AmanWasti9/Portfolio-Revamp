@@ -71,6 +71,39 @@ for (const base of ["beacon", "cogni", "pacer", "pantry", "dealboard"]) {
 }
 await writeFile(path.resolve("src/generated/case-images.json"), JSON.stringify(manifest, null, 2) + "\n");
 
+// About page "Behind the work" drawings (assets/about/*.png).
+// Each channel is scaled so the drawing's paper becomes the site's own paper
+// colour (--paper #e8e8e4). The images then sit on the page with no visible box.
+// (CSS multiply can't do this here: the About strip slides with a transform.)
+const PAGE = [232, 232, 228];
+const ABOUT = {
+  "The desk.png": "about-desk",
+  "Hands at work.png": "about-hands",
+  "The planning wall.png": "about-wall",
+  "From sketch to screen.png": "about-sketch",
+  "SaaS video work.png": "about-video",
+};
+for (const [file, slug] of Object.entries(ABOUT)) {
+  const input = path.join(SRC, "about", file);
+  // paper colour = the 90th percentile of each channel
+  const { data, info } = await sharp(input).removeAlpha().raw().toBuffer({ resolveWithObject: true });
+  const paper = [0, 1, 2].map((c) => {
+    const vals = [];
+    for (let i = c; i < data.length; i += info.channels * 7) vals.push(data[i]);
+    vals.sort((a, b) => a - b);
+    return vals[Math.floor(vals.length * 0.9)];
+  });
+  for (const width of [1500, 800]) {
+    await sharp(input)
+      .removeAlpha()
+      .linear(paper.map((p, c) => PAGE[c] / p), [0, 0, 0])
+      .resize({ width, withoutEnlargement: true })
+      .webp({ quality: 82 })
+      .toFile(path.join(OUT, `${slug}-${width}.webp`));
+  }
+  console.log("✓", slug, "paper", paper.join(","));
+}
+
 // Decorative cut-outs for the services section: trim the empty transparent border, keep alpha.
 for (const name of ["computer", "mouse"]) {
   for (const width of [900, 500]) {

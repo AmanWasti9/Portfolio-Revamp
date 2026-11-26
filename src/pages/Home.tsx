@@ -133,6 +133,8 @@ function Statement() {
 
   return (
     <section className="statement" ref={root}>
+      {/* it's my own belief, not a quote from someone else, so it gets a label instead of quote marks */}
+      <p className="case__label statement__label">What I believe</p>
       <h2 className="statement__lines">
         <span className="l1">Good websites</span>
         <span className="l2">explain themselves</span>
@@ -416,8 +418,7 @@ const WAYPOINTS: [number, number][] = [
   [637, 545], [626, 612], [560, 640], [430, 646], [402, 680], [400, 722], // → Development
   [398, 790], [430, 818], [640, 824], [700, 845], [708, 890], // → Testing
   [708, 975], [690, 1040], [600, 1072], [530, 1084], [505, 1130], // → Launch
-  [503, 1215], [520, 1268], [540, 1300], // → Reflection
-  [540, 1385], [550, 1430],
+  [503, 1215], [520, 1268], [540, 1300], // → Reflection (the line ends here)
 ];
 
 /** Catmull-Rom → one cubic Bézier command per waypoint pair. */
@@ -439,11 +440,11 @@ const piece = (from: number, to: number) =>
 const TRACK_D = piece(0, WAYPOINTS.length - 1);
 
 // waypoint index of every dot → the path is cut into pieces dot-to-dot:
-// [start → dot 1], [dot 1 → dot 2] … [dot 7 → end]
+// [start → dot 1], [dot 1 → dot 2] … [dot 6 → dot 7]. Nothing runs past the last dot.
 const DOT_AT = STEP_LAYOUT.map(({ dot }) =>
   WAYPOINTS.findIndex(([x, y]) => x === dot[0] && y === dot[1])
 );
-const PIECES = [0, ...DOT_AT].map((from, i, arr) => piece(from, arr[i + 1] ?? WAYPOINTS.length - 1));
+const PIECES = DOT_AT.map((to, i) => piece(i === 0 ? 0 : DOT_AT[i - 1], to));
 
 const pct = (v: number, of: number) => `${((v / of) * 100).toFixed(3)}%`;
 // The line's tip sits at this height of the viewport while you scroll.
@@ -495,7 +496,8 @@ function Process() {
         const segs = gsap.utils.toArray<SVGPathElement>(".process__seg");
         const tip = root.current!.querySelector<SVGCircleElement>(".process__tip")!;
         const lens = segs.map((sg) => sg.getTotalLength());
-        const ys = [WAYPOINTS[0][1], ...STEP_LAYOUT.map((l) => l.dot[1]), WAYPOINTS[WAYPOINTS.length - 1][1]];
+        const ys = [WAYPOINTS[0][1], ...STEP_LAYOUT.map((l) => l.dot[1])];
+        const END = ys[ys.length - 1] - ys[0]; // timeline time at which the line reaches the last dot
         const HOLD = 55; // pause at each dot, in sketch units of scroll
 
         const tl = gsap.timeline({
@@ -507,8 +509,9 @@ function Process() {
             scrub: rm ? true : 1,
           },
           onUpdate() {
-            const p = this.progress();
-            tip.style.opacity = p > 0.002 && p < 0.998 ? "1" : "0";
+            // the travelling tip shows only while the line is on its way; at the last dot it's gone
+            const t = this.time();
+            tip.style.opacity = t > 1 && t < END ? "1" : "0";
           },
         });
         tl.to({}, { duration: SKETCH_H - ys[0] }, 0); // full length, so time maps 1:1 to sketch height
@@ -543,13 +546,30 @@ function Process() {
       });
 
       mm.add("(max-width: 1099px)", () => {
+        // the straight line stops at the centre of the last dot, not the bottom of the list
+        const line = map.querySelector<HTMLElement>(".process__line")!;
+        const last = dots[dots.length - 1];
+        const fit = () => {
+          const m = map.getBoundingClientRect();
+          const d = last.getBoundingClientRect();
+          line.style.bottom = `${m.bottom - (d.top + d.height / 2)}px`;
+        };
+        fit();
+        ScrollTrigger.addEventListener("refreshInit", fit);
         gsap.fromTo(
-          ".process__line",
+          line,
           { scaleY: 0 },
           {
             scaleY: 1,
             ease: "none",
-            scrollTrigger: { trigger: map, start: `top ${LINE_AT}`, end: `bottom ${LINE_AT}`, scrub: rm ? true : 0.5 },
+            // grows from the top of the map to the last dot, so its tip stays on the reading line
+            scrollTrigger: {
+              trigger: map,
+              start: `top ${LINE_AT}`,
+              endTrigger: last,
+              end: `center ${LINE_AT}`,
+              scrub: rm ? true : 0.5,
+            },
           }
         );
         // a dot lights up as the line passes it; it goes out again if you scroll back above it
@@ -565,6 +585,10 @@ function Process() {
             onLeaveBack: () => step.classList.remove("is-on"),
           });
         });
+        return () => {
+          ScrollTrigger.removeEventListener("refreshInit", fit);
+          line.style.bottom = "";
+        };
       });
     },
     { dependencies: [revealed], scope: root }

@@ -7,3 +7,5 @@ dist
 !.env.example
 .claude/
 mockups/*/raw/
+# downloaded fonts: licensed files, never publish them in the repo
+fonts/

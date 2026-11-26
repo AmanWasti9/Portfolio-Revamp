@@ -687,6 +687,9 @@ ol {
 .statement {
   padding: var(--section) var(--pad) 0;
 }
+.statement__label {
+  margin-bottom: clamp(1.2rem, 2.4vw, 2rem);
+}
 .statement__lines {
   font-family: var(--serif);
   text-transform: uppercase;
@@ -1028,9 +1031,16 @@ ol {
   height: auto;
 }
 .svc__deco--mouse {
-  right: max(1vw, 8px);
+  right: 0;
   top: 26%;
   width: clamp(180px, 20vw, 330px);
+}
+/* mirrored so the wire runs off the right edge of the screen, as if plugged in
+   beyond it (phones keep the original: there the wire points at the computer) */
+@media (min-width: 761px) {
+  .svc__deco--mouse img {
+    transform: scaleX(-1);
+  }
 }
 .svc__deco--computer {
   left: max(1vw, 8px);
@@ -1095,8 +1105,15 @@ ol {
 .oss__pkg {
   position: relative;
   display: grid;
-  grid-template-columns: 1.15fr 1fr;
-  gap: clamp(2rem, 6vw, 6rem);
+  /* name on top; data left (the chart starts under the name), text + install right */
+  /* the right column is exactly as wide as its text (max 46ch) and sits flush
+     against the right edge; the chart takes all the remaining width */
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "top   top"
+    "stats text";
+  column-gap: clamp(2.5rem, 6vw, 6rem);
+  row-gap: clamp(1.6rem, 2.6vw, 2.4rem);
   padding: clamp(2.2rem, 4vw, 3.6rem) 0;
 }
 .oss__rule {
@@ -1109,11 +1126,29 @@ ol {
   opacity: 0.22;
   transform-origin: left;
 }
-.oss__main {
+.oss__top {
+  grid-area: top;
+  display: grid;
+  gap: 1rem;
+  justify-items: start;
+}
+.oss__text {
+  grid-area: text;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* "about" at the top, "get it" at the bottom */
+  gap: 2rem;
+  /* line the description up with the top of the big number */
+  padding-top: 0.6rem;
+}
+.oss__about,
+.oss__get {
   display: grid;
   gap: 1.1rem;
-  align-content: start;
   justify-items: start;
+}
+.oss__get {
+  gap: 1.4rem;
 }
 .oss__idx {
   font-size: 12px;
@@ -1191,6 +1226,7 @@ ol {
   }
 }
 .oss__stats {
+  grid-area: stats;
   display: grid;
   gap: 1.2rem;
   align-content: start;
@@ -1268,12 +1304,22 @@ ol {
   font-size: 13px;
 }
 .oss__npm {
-  justify-self: start;
+  /* sit on the same line as the facts values at the bottom of the left column */
+  margin-bottom: 0.1rem;
 }
 @media (max-width: 899px) {
+  /* phones: what it is and how to install it, then the numbers */
   .oss__pkg {
     grid-template-columns: 1fr;
-    gap: 2rem;
+    grid-template-areas:
+      "top"
+      "text"
+      "stats";
+    row-gap: 1.6rem;
+  }
+  .oss__text {
+    padding-top: 0;
+    gap: 1.4rem;
   }
   .oss__facts {
     grid-template-columns: repeat(2, 1fr);
@@ -2189,7 +2235,14 @@ ol {
 .facts__links {
   gap: 0.4rem 1.2rem !important;
 }
+/* keep the live dot beside the first line when the text wraps */
+.facts .facts__now {
+  flex-wrap: nowrap;
+  align-items: baseline;
+}
 .facts__live {
+  flex-shrink: 0;
+  transform: translateY(-0.1em);
   width: 7px;
   height: 7px;
   border-radius: 50%;
@@ -2213,41 +2266,61 @@ ol {
   margin-top: 0.6rem;
 }
 
-/* work reel: pinned, slides sideways */
+/* "Behind the work": pencil drawings, pinned, slide sideways.
+   Every drawing shares one height (--h); its width follows its own shape (--ar). */
 .reel {
+  /* drawing height: leaves room on screen for the label above and the caption below */
+  --h: min(40vw, calc(100svh - 17rem));
   overflow: hidden;
-  padding: clamp(5rem, 9vw, 8rem) 0 0;
+  /* margin, not padding: the strip pins at the centre of the screen, and padding
+     would count as part of it and push the captions off the bottom */
+  margin-top: clamp(4rem, 7vw, 6rem);
+  padding: 1.2rem 0;
+}
+.reel__label {
+  padding: 0 var(--pad);
+  margin-bottom: clamp(1.2rem, 2vw, 1.8rem);
 }
 .reel__track {
   display: flex;
-  gap: 2.4vw;
+  align-items: flex-start;
+  gap: 4vw;
   width: max-content;
   padding: 0 var(--pad);
 }
 .reel__item {
   display: grid;
-  gap: 1rem;
-  width: 56vw;
+  gap: 1.2rem;
+  width: calc(var(--h) * var(--ar));
 }
 .reel__img {
   display: block;
-  overflow: hidden;
-  aspect-ratio: 16 / 9;
-  background: var(--paper-2);
+  height: var(--h);
+  aspect-ratio: var(--ar);
 }
 .reel__img img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  transition: scale 0.8s var(--ease-out);
+  object-fit: contain;
+  /* soften the edges so the paper melts into the page */
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 3%, #000 97%, transparent),
+    linear-gradient(to bottom, transparent, #000 3%, #000 97%, transparent);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(to right, transparent, #000 3%, #000 97%, transparent),
+    linear-gradient(to bottom, transparent, #000 3%, #000 97%, transparent);
+  mask-composite: intersect;
 }
 .reel__meta {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: auto 1fr;
   align-items: baseline;
-  gap: 1rem;
+  column-gap: 0.8rem;
+  row-gap: 0.5rem;
+  max-width: 44ch;
+}
+.reel__num {
   font-size: 12px;
-  color: var(--ink-2);
+  color: var(--accent);
 }
 .reel__meta b {
   font-family: var(--serif);
@@ -2257,10 +2330,11 @@ ol {
   line-height: 1;
   color: var(--ink);
 }
-@media (hover: hover) and (pointer: fine) {
-  .reel__item:hover .reel__img img {
-    scale: 1.03;
-  }
+.reel__body {
+  grid-column: 2;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--ink-2);
 }
 .about .journey {
   padding-top: var(--section);
@@ -2318,13 +2392,22 @@ ol {
   .facts__row {
     grid-template-columns: 5.5rem 1fr;
   }
+  /* phones: only the drawings swipe sideways (the label stays put),
+     and each one snaps to the page margin, not the screen edge */
   .reel {
+    --h: min(58vw, 46vh);
+  }
+  .reel__track {
+    width: auto;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--pad);
     scrollbar-width: none;
   }
+  .reel__track::-webkit-scrollbar {
+    display: none;
+  }
   .reel__item {
-    width: 82vw;
     scroll-snap-align: start;
   }
   .principle {
@@ -2571,8 +2654,15 @@ ol {
   .nav__links {
     display: none;
   }
+  /* a real thumb-sized button: 44px tall, outlined so it reads as tappable */
   .nav__burger {
     display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 1.1rem;
+    font-size: 15px;
+    border: 1px solid currentColor;
+    border-radius: 999px;
   }
   /* phones: start the content a third of the way down instead of pinning it to the bottom */
   .hero {
@@ -2599,9 +2689,14 @@ ol {
   .hero__actions {
     justify-self: start;
   }
+  /* name on its own line, so long names like DEALBOARD never get cut off */
   .works__row {
-    grid-template-columns: 1fr auto;
+    grid-template-columns: 1fr;
+    gap: 0.4rem;
     padding-bottom: 1.6rem;
+  }
+  .works__kind {
+    text-align: left;
   }
   .works__year {
     display: none;

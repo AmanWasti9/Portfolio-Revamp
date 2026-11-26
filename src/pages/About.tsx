@@ -1,6 +1,6 @@
-import { useRef } from "react";
+import { useRef, type CSSProperties } from "react";
 import { gsap, ScrollTrigger, useGSAP, reducedMotion } from "../lib/motion";
-import { about, cover, imgSrc, imgSrcSet, journey, packages, projects, site } from "../content";
+import { about, journey, packages, site } from "../content";
 import { TLink, useRevealed } from "../components/Transition";
 import { Roll, SplitReveal } from "../components/Motion";
 import { Journey } from "../components/Journey";
@@ -97,9 +97,9 @@ export default function About() {
           </div>
           <div className="facts__row">
             <dt>Currently</dt>
-            <dd>
+            <dd className="facts__now">
               <i className="facts__live" aria-hidden="true" />
-              {journey.entries[0].title}
+              <span>{journey.currently}</span>
             </dd>
           </div>
           <div className="facts__row">
@@ -144,25 +144,30 @@ export default function About() {
         </div>
       </section>
 
-      <section className="reel" aria-label="Selected work">
+      {/* pencil drawings of how I work; the project covers already live on Home and Work */}
+      <section className="reel" aria-labelledby="behind-title">
+        <h2 className="case__label reel__label" id="behind-title">
+          Behind the work
+        </h2>
         <ul className="reel__track">
-          {projects.map((p) => (
-            <li key={p.slug}>
-              <TLink to={`/work/${p.slug}`} className="reel__item" data-cursor="View case">
-                <span className="reel__img">
-                  <img
-                    src={imgSrc(cover(p), 1100)}
-                    srcSet={imgSrcSet(cover(p))}
-                    sizes="(min-width: 900px) 56vw, 86vw"
-                    alt={`${p.title}, ${p.kind}`}
-                    loading="lazy"
-                  />
-                </span>
-                <span className="reel__meta">
-                  <b>{p.title}</b>
-                  <span>{p.kind}</span>
-                </span>
-              </TLink>
+          {about.behind.map((b, i) => (
+            <li key={b.img} className="reel__item" style={{ "--ar": b.w / b.h } as CSSProperties}>
+              <span className="reel__img">
+                <img
+                  src={`/work/${b.img}-800.webp`}
+                  srcSet={`/work/${b.img}-800.webp 800w, /work/${b.img}-1500.webp ${b.w}w`}
+                  sizes="(min-width: 900px) 60vw, 86vw"
+                  width={b.w}
+                  height={b.h}
+                  alt={`Pencil drawing: ${b.body}`}
+                  loading="lazy"
+                />
+              </span>
+              <span className="reel__meta">
+                <span className="reel__num">({String(i + 1).padStart(2, "0")})</span>
+                <b>{b.title}</b>
+                <span className="reel__body">{b.body}</span>
+              </span>
             </li>
           ))}
         </ul>
