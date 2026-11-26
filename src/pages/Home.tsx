@@ -412,7 +412,7 @@ const STEP_LAYOUT: { dot: [number, number]; box: [number, number]; side: Side }[
 ];
 
 const WAYPOINTS: [number, number][] = [
-  [392, 20], [392, 95], // → Discovery
+  [392, 95], // Discovery: the line starts here
   [392, 178], [450, 194], [640, 196], [688, 212], [695, 245], // → Planning
   [697, 330], [696, 410], [672, 448], [640, 478], // → Design
   [637, 545], [626, 612], [560, 640], [430, 646], [402, 680], [400, 722], // → Development
@@ -440,11 +440,11 @@ const piece = (from: number, to: number) =>
 const TRACK_D = piece(0, WAYPOINTS.length - 1);
 
 // waypoint index of every dot → the path is cut into pieces dot-to-dot:
-// [start → dot 1], [dot 1 → dot 2] … [dot 6 → dot 7]. Nothing runs past the last dot.
+// [dot 1 → dot 2] … [dot 6 → dot 7]. It starts at Discovery and ends at Reflection.
 const DOT_AT = STEP_LAYOUT.map(({ dot }) =>
   WAYPOINTS.findIndex(([x, y]) => x === dot[0] && y === dot[1])
 );
-const PIECES = DOT_AT.map((to, i) => piece(i === 0 ? 0 : DOT_AT[i - 1], to));
+const PIECES = DOT_AT.slice(1).map((to, i) => piece(DOT_AT[i], to));
 
 const pct = (v: number, of: number) => `${((v / of) * 100).toFixed(3)}%`;
 // The line's tip sits at this height of the viewport while you scroll.
@@ -496,8 +496,10 @@ function Process() {
         const segs = gsap.utils.toArray<SVGPathElement>(".process__seg");
         const tip = root.current!.querySelector<SVGCircleElement>(".process__tip")!;
         const lens = segs.map((sg) => sg.getTotalLength());
-        const ys = [WAYPOINTS[0][1], ...STEP_LAYOUT.map((l) => l.dot[1])];
-        const END = ys[ys.length - 1] - ys[0]; // timeline time at which the line reaches the last dot
+        // timeline time = the sketch height at the reading line (0 = top of the map)
+        const ys = STEP_LAYOUT.map((l) => l.dot[1]);
+        const START = ys[0]; // Discovery reaches the reading line: step 1 lights up
+        const END = ys[ys.length - 1]; // the line reaches Reflection
         const HOLD = 55; // pause at each dot, in sketch units of scroll
 
         const tl = gsap.timeline({
@@ -509,16 +511,21 @@ function Process() {
             scrub: rm ? true : 1,
           },
           onUpdate() {
-            // the travelling tip shows only while the line is on its way; at the last dot it's gone
             const t = this.time();
-            tip.style.opacity = t > 1 && t < END ? "1" : "0";
+            // step 1 has no line leading into it: it lights up when it reaches the reading line
+            const first = t >= START;
+            steps[0].classList.toggle("is-on", first);
+            if (first) showText(0);
+            // the travelling tip shows only while the line is on its way
+            tip.style.opacity = t > START && t < END ? "1" : "0";
           },
         });
-        tl.to({}, { duration: SKETCH_H - ys[0] }, 0); // full length, so time maps 1:1 to sketch height
+        tl.to({}, { duration: SKETCH_H }, 0); // full length, so time maps 1:1 to sketch height
 
+        // piece i runs from dot i to dot i + 1, after a short rest at dot i
         segs.forEach((seg, i) => {
-          const start = ys[i] - ys[0] + (i > 0 ? HOLD : 0);
-          const dur = Math.max(20, ys[i + 1] - ys[i] - (i > 0 ? HOLD : 0));
+          const start = ys[i] + HOLD;
+          const dur = Math.max(20, ys[i + 1] - ys[i] - HOLD);
           tl.fromTo(
             seg,
             { strokeDashoffset: 1000 },
@@ -533,11 +540,9 @@ function Process() {
                 tip.setAttribute("cx", String(pt.x));
                 tip.setAttribute("cy", String(pt.y));
                 // the dot at the end of this piece is lit only once the line has reached it
-                if (i < steps.length) {
-                  const on = this.progress() >= 1;
-                  steps[i].classList.toggle("is-on", on);
-                  if (on) showText(i);
-                }
+                const on = this.progress() >= 1;
+                steps[i + 1].classList.toggle("is-on", on);
+                if (on) showText(i + 1);
               },
             },
             start
@@ -546,12 +551,15 @@ function Process() {
       });
 
       mm.add("(max-width: 1099px)", () => {
-        // the straight line stops at the centre of the last dot, not the bottom of the list
+        // the straight line runs from the centre of the first dot to the centre of the last
         const line = map.querySelector<HTMLElement>(".process__line")!;
+        const first = dots[0];
         const last = dots[dots.length - 1];
         const fit = () => {
           const m = map.getBoundingClientRect();
+          const a = first.getBoundingClientRect();
           const d = last.getBoundingClientRect();
+          line.style.top = `${a.top + a.height / 2 - m.top}px`;
           line.style.bottom = `${m.bottom - (d.top + d.height / 2)}px`;
         };
         fit();
@@ -562,10 +570,10 @@ function Process() {
           {
             scaleY: 1,
             ease: "none",
-            // grows from the top of the map to the last dot, so its tip stays on the reading line
+            // grows from the first dot to the last, so its tip stays on the reading line
             scrollTrigger: {
-              trigger: map,
-              start: `top ${LINE_AT}`,
+              trigger: first,
+              start: `center ${LINE_AT}`,
               endTrigger: last,
               end: `center ${LINE_AT}`,
               scrub: rm ? true : 0.5,
@@ -587,6 +595,7 @@ function Process() {
         });
         return () => {
           ScrollTrigger.removeEventListener("refreshInit", fit);
+          line.style.top = "";
           line.style.bottom = "";
         };
       });
