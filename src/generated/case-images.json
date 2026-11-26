@@ -2,26 +2,36 @@
   "beacon": [
     "detail-1",
     "detail-2",
-    "showcase"
+    "showcase",
+    "screen",
+    "sketch"
   ],
   "cogni": [
     "detail-1",
     "detail-2",
-    "showcase"
+    "showcase",
+    "screen",
+    "sketch"
   ],
   "pacer": [
     "detail-1",
     "detail-2",
-    "showcase"
+    "showcase",
+    "screen",
+    "sketch"
   ],
   "pantry": [
     "detail-1",
     "detail-2",
-    "showcase"
+    "showcase",
+    "screen",
+    "sketch"
   ],
   "dealboard": [
     "detail-1",
     "detail-2",
-    "showcase"
+    "showcase",
+    "screen",
+    "sketch"
   ]
 }

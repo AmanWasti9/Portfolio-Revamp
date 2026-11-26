@@ -4,6 +4,7 @@ import { gsap, useGSAP, reducedMotion } from "../lib/motion";
 import { cover, hasCaseImage, imgSrc, imgSrcSet, projects } from "../content";
 import { TLink, useRevealed } from "../components/Transition";
 import { ImageReveal, Roll, SplitReveal } from "../components/Motion";
+import { SketchToScreen } from "../components/SketchToScreen";
 import NotFound from "./NotFound";
 
 export default function CaseStudy() {
@@ -114,6 +115,9 @@ function Case({ index }: { index: number }) {
           {p.problem}
         </SplitReveal>
       </section>
+
+      {/* the wireframe becomes the finished page (only when both images exist) */}
+      {hasCaseImage(p.image, "sketch") && hasCaseImage(p.image, "screen") && <SketchToScreen p={p} />}
 
       <div className="case__details">
         {p.details.map((pos, i) => {

@@ -48,9 +48,11 @@ console.log("✓ process");
 //   detail-2.*  second tall close-up (4:5)
 //   showcase.*  wide image after "The approach" (16:9)
 // Any of .png .jpg .jpeg .webp works. Missing slots fall back to the old crops.
-const SLOTS = ["hero", "detail-1", "detail-2", "showcase"];
+// screen + sketch: the "sketch to screen" pair, made by `npm run sketches`
+const SLOTS = ["hero", "detail-1", "detail-2", "showcase", "screen", "sketch"];
 const CASES = path.join(SRC, "case-studies");
 const manifest = {};
+const ratios = {};
 for (const base of ["beacon", "cogni", "pacer", "pantry", "dealboard"]) {
   const dir = path.join(CASES, base);
   if (!existsSync(dir)) continue;
@@ -66,10 +68,17 @@ for (const base of ["beacon", "cogni", "pacer", "pantry", "dealboard"]) {
         .toFile(path.join(OUT, `${out}-${width}.webp`));
     }
     (manifest[base] ??= []).push(slot);
+    // real proportions of the sketch-to-screen pair, so the page can reserve
+    // the right space before the image loads (the section pins on scroll)
+    if (slot === "screen") {
+      const m = await sharp(path.join(dir, file)).metadata();
+      ratios[base] = +(m.width / m.height).toFixed(4);
+    }
     console.log("✓", base, slot);
   }
 }
 await writeFile(path.resolve("src/generated/case-images.json"), JSON.stringify(manifest, null, 2) + "\n");
+await writeFile(path.resolve("src/generated/screen-ratios.json"), JSON.stringify(ratios, null, 2) + "\n");
 
 // About page "Behind the work" drawings (assets/about/*.png).
 // Each channel is scaled so the drawing's paper becomes the site's own paper

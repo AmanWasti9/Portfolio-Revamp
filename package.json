@@ -8,6 +8,7 @@
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
     "images": "node scripts/optimize-images.mjs",
+    "sketches": "node scripts/render-sketches.mjs",
     "mockups": "node scripts/render-mockups.mjs"
   },
   "dependencies": {

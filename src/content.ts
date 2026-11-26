@@ -422,7 +422,7 @@ export const imgSrc = (base: string, w: 560 | 1100 | 2000) => `/work/${base}-${w
 
 // Which extra case-study images exist (written by `npm run images`).
 import caseImages from "./generated/case-images.json";
-export type CaseSlot = "hero" | "detail-1" | "detail-2" | "showcase";
+export type CaseSlot = "hero" | "detail-1" | "detail-2" | "showcase" | "screen" | "sketch";
 export const hasCaseImage = (base: string, slot: CaseSlot) =>
   ((caseImages as Record<string, string[]>)[base] ?? []).includes(slot);
 
