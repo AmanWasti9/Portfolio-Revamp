@@ -7,12 +7,12 @@
   --ink: #151515;
   --ink-2: #5a5a55;
   --line: rgba(21, 21, 21, 0.16);
-  /* teal palette */
-  --accent: #176f68;      /* Deep Teal — main accent, 6:1 with Pale Mint text */
-  --accent-mid: #238f83;  /* Teal — bright pixels, giant footer type */
-  --accent-soft: #58b9ac; /* Mint — hero tile field */
-  --accent-pale: #a5ddd5; /* Soft Mint — selection highlight */
-  --white: #e8f5f2;       /* Pale Mint — text on teal and ink */
+  /* electric blue palette */
+  --accent: #2547f5;      /* Electric Blue — main accent, readable on paper and under light text */
+  --accent-mid: #3d65ff;  /* Cobalt — bright pixels, giant footer type */
+  --accent-soft: #91aaff; /* Periwinkle — hero tile field */
+  --accent-pale: #dce4ff; /* Soft Blue — selection highlight */
+  --white: #f2f4ff;       /* Pale Blue — text on blue and ink */
 
   --serif: "Instrument Serif", "Times New Roman", serif;
   --mono: "Geist Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
@@ -1655,7 +1655,7 @@ ol {
   stroke-width: 4;
   opacity: 0;
   transition: opacity 0.3s ease;
-  filter: drop-shadow(0 0 6px rgba(23, 111, 104, 0.45));
+  filter: drop-shadow(0 0 6px rgba(37, 71, 245, 0.45));
 }
 .process__line {
   display: none;

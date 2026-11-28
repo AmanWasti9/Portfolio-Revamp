@@ -3,7 +3,7 @@ import { gsap, useGSAP, reducedMotion, finePointer } from "../lib/motion";
 import { useRevealed } from "./Transition";
 
 // ─────────────────────────────────────────────────────────────
-//  A field of teal squares. Tiles light up under the pointer
+//  A field of blue squares. Tiles light up under the pointer
 //  and fade back, leaving a short trail. Decorative only.
 // ─────────────────────────────────────────────────────────────
 

@@ -390,7 +390,7 @@ function Services() {
 
 // ─────────────────────────────────────────────────────────────
 //  Process — a pencil-sketch desk (public/work/process-*.webp) with a
-//  teal path that draws itself as you scroll, visiting each step.
+//  blue path that draws itself as you scroll, visiting each step.
 //  All coordinates are in the sketch's own pixel space (1100 × 1430) and
 //  were picked to sit in the empty paper between the drawings.
 // ─────────────────────────────────────────────────────────────

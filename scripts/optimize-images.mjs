@@ -18,6 +18,42 @@ const files = {
 
 await mkdir(OUT, { recursive: true });
 
+// The drawings and cut-outs were painted with a teal accent. This turns only those
+// teal pixels into the site's blue, keeping their shading. Greys and paper are untouched.
+const TEAL_TO_BLUE = 54; // degrees of hue
+async function bluify(input) {
+  const { data, info } = await sharp(input).raw().toBuffer({ resolveWithObject: true });
+  const ramp = (v, from, to) => Math.min(1, Math.max(0, (v - from) / (to - from)));
+  for (let i = 0; i < data.length; i += info.channels) {
+    const [r, g, b] = [data[i] / 255, data[i + 1] / 255, data[i + 2] / 255];
+    const max = Math.max(r, g, b);
+    const min = Math.min(r, g, b);
+    const d = max - min;
+    if (d < 0.04) continue;
+    let h = max === r ? ((g - b) / d + 6) % 6 : max === g ? (b - r) / d + 2 : (r - g) / d + 4;
+    h *= 60;
+    const l = (max + min) / 2;
+    const s = d / (1 - Math.abs(2 * l - 1));
+    // soft edges on both limits, so anti-aliased strokes don't keep a teal fringe
+    const w = ramp(h, 120, 140) * (1 - ramp(h, 205, 220)) * ramp(s, 0.08, 0.2);
+    if (!w) continue;
+    const nh = (h + TEAL_TO_BLUE) % 360;
+    const ns = Math.min(1, s * 1.25);
+    // dark teal would turn navy, so lift it towards the brightness of the site's blue
+    const nl = l + (1 - l) * 0.24;
+    const c = (1 - Math.abs(2 * nl - 1)) * ns;
+    const f = (n) => {
+      const k = (n + nh / 30) % 12;
+      return nl - (c / 2) * Math.max(-1, Math.min(k - 3, 9 - k, 1));
+    };
+    [f(0), f(8), f(4)].forEach((v, j) => {
+      data[i + j] = Math.round(data[i + j] * (1 - w) + v * 255 * w);
+    });
+  }
+  const raw = { width: info.width, height: info.height, channels: info.channels };
+  return sharp(data, { raw }).png().toBuffer();
+}
+
 for (const [file, slug] of Object.entries(files)) {
   const input = path.join(SRC, file);
   for (const width of [2000, 1100, 560]) {
@@ -102,8 +138,9 @@ for (const [file, slug] of Object.entries(ABOUT)) {
     vals.sort((a, b) => a - b);
     return vals[Math.floor(vals.length * 0.9)];
   });
+  const blue = await bluify(input);
   for (const width of [1500, 800]) {
-    await sharp(input)
+    await sharp(blue)
       .removeAlpha()
       .linear(paper.map((p, c) => PAGE[c] / p), [0, 0, 0])
       .resize({ width, withoutEnlargement: true })
@@ -115,8 +152,9 @@ for (const [file, slug] of Object.entries(ABOUT)) {
 
 // Decorative cut-outs for the services section: trim the empty transparent border, keep alpha.
 for (const name of ["computer", "mouse"]) {
+  const blue = await bluify(path.join(SRC, `${name}.png`));
   for (const width of [900, 500]) {
-    await sharp(path.join(SRC, `${name}.png`))
+    await sharp(blue)
       .trim({ threshold: 1 })
       .resize({ width, withoutEnlargement: true })
       .webp({ quality: 82, alphaQuality: 90 })

@@ -16,8 +16,8 @@ import { projects, site } from "../content";
 
 // ─────────────────────────────────────────────────────────────
 //  Full-viewport tile transition.
-//  boot  → teal tiles + wordmark + counter, dissolve in random order
-//  nav   → ink tiles (with a few teal "pixels") fill in random order,
+//  boot  → blue tiles + wordmark + counter, dissolve in random order
+//  nav   → ink tiles (with a few blue "pixels") fill in random order,
 //          the destination name rises in the middle, route changes,
 //          tiles dissolve to reveal the new page.
 // ─────────────────────────────────────────────────────────────

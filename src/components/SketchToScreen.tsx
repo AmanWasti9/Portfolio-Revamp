@@ -9,7 +9,7 @@ import ratios from "../generated/screen-ratios.json";
 //  Sketch to screen — the pencil wireframe of a project's first screen
 //  turns into the finished page as you scroll. Both images are the same
 //  size and layout (made by `npm run sketches`), so every box lines up.
-//  Desktop: the frame pins while a teal line sweeps across it.
+//  Desktop: the frame pins while a blue line sweeps across it.
 //  Phones: no pin; the sweep follows the frame through the screen.
 // ─────────────────────────────────────────────────────────────
 export function SketchToScreen({ p }: { p: Project }) {

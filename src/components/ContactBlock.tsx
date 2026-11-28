@@ -16,7 +16,7 @@ const floating = [
   { w: "Colour", x: 86, y: 80 },
 ];
 
-/** The teal "start a project" block + footer, shared by every page. */
+/** The blue "start a project" block + footer, shared by every page. */
 export function ContactBlock({ compact = false }: { compact?: boolean }) {
   const root = useRef<HTMLElement>(null);
   const revealed = useRevealed();
